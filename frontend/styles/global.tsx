@@ -86,46 +86,35 @@ export const GlobalStyles = createGlobalStyle`
 	}
 
 	h1,
-	.type-h1 {
-		font-size: ${pxToRem(18)};
-		line-height: ${pxToRem(18)};
-	}
-
 	h2,
-	.type-h2 {
-		font-size: ${pxToRem(18)};
-		line-height: ${pxToRem(18)};
-	}
-
 	h3,
-	.type-h3 {
-		font-size: ${pxToRem(18)};
-		line-height: ${pxToRem(18)};
-	}
-
 	h4,
-	.type-h4 {
-		font-size: ${pxToRem(18)};
-		line-height: ${pxToRem(18)};
-	}
-
 	p,
+	.type-h1,
+	.type-h2,
+	.type-h3,
+	.type-h4,
 	.type-p,
 	a,
 	button,
 	div {
+		font-weight: 400;
 		font-size: ${pxToRem(18)};
-		line-height: ${pxToRem(18)};
+		line-height: ${pxToRem(22)};
+		letter-spacing: -0.05em;
+		text-transform: uppercase;
 	}
 
 	.type-small {
 		font-size: ${pxToRem(12)};
 		line-height: ${pxToRem(12)};
+		letter-spacing: -0.05em;
 	}
 
 	.type-large {
 		font-size: ${pxToRem(35)};
 		line-height: ${pxToRem(35)};
+		letter-spacing: -0.05em;
 	}
 
 	mux-player {
@@ -177,16 +166,19 @@ export const GlobalStyles = createGlobalStyle`
 	}
 
 	.embla {
-		overflow: hidden;
+		/* overflow: hidden; */
 	}
 
 	.embla__container {
 		display: flex;
+		flex-direction: column;
+		height: ${pxToRem(124)};
 	}
 
 	.embla__slide {
-		flex: 0 0 100%;
+		flex: 0 0 auto;
 		min-width: 0;
+		margin-bottom: 2px
 	}
 
 	.performance {

@@ -1,0 +1,268 @@
+import styled from "styled-components";
+import MenuLink from "../../elements/MenuLink";
+import { AnimatePresence, motion } from "framer-motion";
+import pxToRem from "../../../utils/pxToRem";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ProjectType } from "../../../shared/types/types";
+import useEmblaCarousel from "embla-carousel-react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
+
+const MenuOuter = styled.div`
+  min-height: ${pxToRem(22)};
+`;
+
+const MenuListWrapper = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const EmblaCarousel = styled.div``;
+
+const EmblaContainer = styled.div``;
+
+const EmblaSlide = styled.div``;
+
+const wrapperVariants = {
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      when: "afterChildren",
+      staggerChildren: 0.01,
+      staggerDirection: -1,
+    },
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+type Props = {
+  menuTabActive: string;
+  menuIsActive: boolean;
+  projects: ProjectType[];
+  setMenuTabActive: (tab: string) => void;
+  setMenuIsActive: (isActive: boolean) => void;
+  setTabActive?: (tab: string) => void;
+};
+
+const MenuList = (props: Props) => {
+  const {
+    menuTabActive,
+    menuIsActive,
+    projects,
+    setMenuTabActive,
+    setMenuIsActive,
+    setTabActive,
+  } = props;
+
+  const [isHovered, setIsHovered] = useState(false);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+
+  const rootNodeRef = useRef<HTMLDivElement>(null);
+
+  const generalLinks = [
+    {
+      title: "Home",
+      id: "home",
+    },
+    {
+      title: "Work",
+      id: "workList",
+    },
+    {
+      title: "Information",
+      id: "information",
+    },
+    {
+      title: "Contact",
+      id: "contact",
+    },
+  ];
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: false,
+      axis: "y",
+      dragFree: false,
+      watchSlides: false,
+      watchDrag: true,
+      align: "start",
+      skipSnaps: true,
+      containScroll: false,
+    },
+    [WheelGesturesPlugin()]
+  );
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollTo(0);
+  }, [menuIsActive]);
+
+  const updateActiveSlide = useCallback(() => {
+    if (!emblaApi || !rootNodeRef.current) return;
+    let closestIndex = null;
+    let closestDistance = Infinity;
+    emblaApi.scrollSnapList().forEach((snap, index) => {
+      const slideElement = emblaApi.slideNodes()[index];
+      const slideTop =
+        slideElement.getBoundingClientRect().top -
+        (
+          rootNodeRef.current ?? { getBoundingClientRect: () => ({ top: 0 }) }
+        ).getBoundingClientRect().top;
+      const distance = Math.abs(slideTop);
+
+      if (distance >= 0 && distance <= 20) {
+        if (distance < closestDistance) {
+          closestIndex = index;
+          closestDistance = distance;
+        }
+      }
+    });
+
+    setActiveSlideIndex(closestIndex ? closestIndex : 0);
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const friction = 0.5;
+    const duration = 10;
+
+    emblaApi.on("pointerUp", (emblaApi) => {
+      emblaApi
+        .internalEngine()
+        .scrollBody.useFriction(friction)
+        .useDuration(duration);
+
+      // or just:
+      emblaApi.internalEngine().scrollBody.useFriction(friction);
+    });
+
+    emblaApi.on("select", (emblaApi) => {
+      emblaApi
+        .internalEngine()
+        .scrollBody.useFriction(friction)
+        .useDuration(duration);
+
+      // or just:
+      emblaApi.internalEngine().scrollBody.useFriction(friction);
+    });
+
+    emblaApi.on("scroll", (emblaApi) => {
+      emblaApi
+        .internalEngine()
+        .scrollBody.useFriction(friction)
+        .useDuration(duration);
+
+      // or just:
+      emblaApi.internalEngine().scrollBody.useFriction(friction);
+    });
+
+    emblaApi.on("scroll", (emblaApi) => {
+      const {
+        limit,
+        target,
+        location,
+        offsetLocation,
+        scrollTo,
+        translate,
+        scrollBody,
+      } = emblaApi.internalEngine();
+
+      let edge: number | null = null;
+
+      if (limit.reachedMax(target.get())) edge = limit.max;
+      if (limit.reachedMin(target.get())) edge = limit.min;
+
+      if (edge !== null) {
+        offsetLocation.set(edge);
+        location.set(edge);
+        target.set(edge);
+        translate.to(edge);
+        translate.toggleActive(false);
+        scrollBody.useDuration(0).useFriction(0);
+        scrollTo.distance(0, false);
+      } else {
+        translate.toggleActive(true);
+      }
+    });
+
+    emblaApi.on("scroll", updateActiveSlide);
+
+    return () => {
+      emblaApi.off("scroll", updateActiveSlide);
+    };
+  }, [emblaApi]);
+
+  return (
+    <MenuOuter ref={rootNodeRef}>
+      <AnimatePresence>
+        {menuIsActive && (
+          <MenuListWrapper
+            variants={wrapperVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            {menuTabActive !== "workList" && (
+              <EmblaCarousel className="embla" ref={emblaRef}>
+                <EmblaContainer className="embla__container">
+                  {generalLinks.map((link, i) => (
+                    <EmblaSlide key={i} className="embla__slide">
+                      <MenuLink
+                        key={i}
+                        title={link.title}
+                        id={link.id}
+                        isHovered={isHovered}
+                        isActive={true}
+                        setIsHovered={setIsHovered}
+                        setMenuIsActive={setMenuIsActive}
+                        setMenuTabActive={setMenuTabActive}
+                      />
+                    </EmblaSlide>
+                  ))}
+                </EmblaContainer>
+              </EmblaCarousel>
+            )}
+
+            {menuTabActive === "workList" && (
+              <EmblaCarousel className="embla" ref={emblaRef}>
+                <EmblaContainer className="embla__container">
+                  {projects.map((link, i) => (
+                    <EmblaSlide key={i} className="embla__slide">
+                      <MenuLink
+                        key={i}
+                        title={link.title}
+                        client={link.client}
+                        services={link.services}
+                        id={link.slug?.current}
+                        isProjectType
+                        isHovered={isHovered}
+                        isActive={activeSlideIndex === i}
+                        setIsHovered={setIsHovered}
+                        setMenuIsActive={setMenuIsActive}
+                        setMenuTabActive={setMenuTabActive}
+                        setTabActive={setTabActive}
+                      />
+                    </EmblaSlide>
+                  ))}
+                </EmblaContainer>
+              </EmblaCarousel>
+            )}
+          </MenuListWrapper>
+        )}
+      </AnimatePresence>
+    </MenuOuter>
+  );
+};
+
+export default MenuList;
