@@ -11,6 +11,16 @@ export default {
       initialValue: 'Site Settings',
     },
     {
+      title: 'SEO title',
+      name: 'seoTitle',
+      type: 'string',
+    },
+    {
+      title: 'SEO description',
+      name: 'seoDescription',
+      type: 'string',
+    },
+    {
       title: 'Email',
       name: 'email',
       type: 'string',

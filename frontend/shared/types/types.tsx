@@ -23,30 +23,42 @@ export type TransitionsType = {
 	};
 };
 
-export type ButtonType = {
-	url: string;
-	pageReference: {
-		_ref: string;
-	};
-	title: string;
-};
-
 export type SlugType = {
 	current: string;
 };
 
-export type SiteSettingsType = {};
-
-export type HomePageType = {
+export type SiteSettingsType = {
+	title: string;
 	seoTitle: string;
 	seoDescription: string;
+	referenceTitle: string;
+	email: string;
+	instagramUrl: string;
+	showreel: {
+		asset: {
+			playbackId: string;
+		};
+	};
 };
 
-export type WorkPageType = {
-	seoTitle: string;
-	seoDescription: string;
+
+export type InformationPageType = {
+	referenceTitle: string;
+	heroContent: any[];
+	services: string[];
+	clients: Array<{
+		link: string;
+		name: string;
+	}>;
 };
 
 export type ProjectType = {
+	_id: string;
+	title: string;
 	slug: SlugType;
+	client: string;
+	services: string[];
+	year: string;
+	media: MediaType;
+	credits: any[];
 };

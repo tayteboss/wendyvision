@@ -2,26 +2,31 @@ import styled from 'styled-components';
 import { NextSeo } from 'next-seo';
 import {
 	HomePageType,
+	ProjectType,
 	SiteSettingsType,
 	TransitionsType
 } from '../shared/types/types';
 import { motion } from 'framer-motion';
 import client from '../client';
 import {
-	homePageQueryString,
+	projectsQueryString,
 	siteSettingsQueryString
 } from '../lib/sanityQueries';
 
 const PageWrapper = styled(motion.div)``;
 
 type Props = {
-	data: HomePageType;
+	projects: ProjectType[];
 	siteSettings: SiteSettingsType;
 	pageTransitionVariants: TransitionsType;
 };
 
 const Page = (props: Props) => {
-	const { data, siteSettings, pageTransitionVariants } = props;
+	const { projects, siteSettings, pageTransitionVariants } = props;
+
+	console.log('projects', projects);
+	console.log('siteSettings', siteSettings);
+	
 
 	return (
 		<PageWrapper
@@ -31,8 +36,8 @@ const Page = (props: Props) => {
 			exit="hidden"
 		>
 			<NextSeo
-				title={data?.seoTitle || ''}
-				description={data?.seoDescription || ''}
+				title={siteSettings?.seoTitle || ''}
+				description={siteSettings?.seoDescription || ''}
 			/>
 			Home
 		</PageWrapper>
@@ -40,13 +45,13 @@ const Page = (props: Props) => {
 };
 
 export async function getStaticProps() {
-	// const siteSettings = await client.fetch(siteSettingsQueryString);
-	// const data = await client.fetch(homePageQueryString);
-	const data = false;
+	const siteSettings = await client.fetch(siteSettingsQueryString);
+	const projects = await client.fetch(projectsQueryString);
 
 	return {
 		props: {
-			data
+			projects,
+			siteSettings
 		}
 	};
 }

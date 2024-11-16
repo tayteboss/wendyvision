@@ -6,7 +6,10 @@ export const GlobalStyles = createGlobalStyle`
 	:root {
 		--colour-white: ${theme.colours.white};
 		--colour-black: ${theme.colours.black};
-		--font-default: ${theme.fonts.default};
+		--colour-grey: ${theme.colours.grey};
+		--colour-mid-grey: ${theme.colours.midGrey};
+		--font-arizona-light: ${theme.fonts.arizonaLight};
+		--font-graphik-bold: ${theme.fonts.graphikBold};
 		--transition-speed-default: ${theme.transitionSpeed.default};
 		--transition-speed-fast: ${theme.transitionSpeed.fast};
 		--transition-speed-extra-fast: ${theme.transitionSpeed.extraFast};
@@ -59,7 +62,7 @@ export const GlobalStyles = createGlobalStyle`
 	button,
 	label,
 	body {
-		font-family: var(--font-default);
+		font-family: var(--font-arizona-light);
 		color: var(--colour-black);
 		line-height: normal;
 	}
@@ -84,66 +87,26 @@ export const GlobalStyles = createGlobalStyle`
 
 	h1,
 	.type-h1 {
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(48)};
-
-		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
-			line-height: ${pxToRem(28)};
-		}
+		font-size: ${pxToRem(18)};
+		line-height: ${pxToRem(18)};
 	}
 
 	h2,
 	.type-h2 {
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(48)};
-
-		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
-			line-height: ${pxToRem(28)};
-		}
+		font-size: ${pxToRem(18)};
+		line-height: ${pxToRem(18)};
 	}
 
 	h3,
 	.type-h3 {
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(28)};
-
-		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
-			line-height: ${pxToRem(28)};
-		}
+		font-size: ${pxToRem(18)};
+		line-height: ${pxToRem(18)};
 	}
 
 	h4,
 	.type-h4 {
-		font-size: ${pxToRem(48)};
-		line-height: ${pxToRem(28)};
-
-		@media ${theme.mediaBreakpoints.tabletPortrait} {
-			font-size: ${pxToRem(38)};
-			line-height: ${pxToRem(38)};
-		}
-
-		@media ${theme.mediaBreakpoints.mobile} {
-			font-size: ${pxToRem(28)};
-			line-height: ${pxToRem(28)};
-		}
+		font-size: ${pxToRem(18)};
+		line-height: ${pxToRem(18)};
 	}
 
 	p,
@@ -151,8 +114,18 @@ export const GlobalStyles = createGlobalStyle`
 	a,
 	button,
 	div {
-		font-size: ${pxToRem(16)};
-		line-height: ${pxToRem(16)};
+		font-size: ${pxToRem(18)};
+		line-height: ${pxToRem(18)};
+	}
+
+	.type-small {
+		font-size: ${pxToRem(12)};
+		line-height: ${pxToRem(12)};
+	}
+
+	.type-large {
+		font-size: ${pxToRem(35)};
+		line-height: ${pxToRem(35)};
 	}
 
 	mux-player {

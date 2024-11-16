@@ -25,6 +25,16 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      title: 'Slug',
+      name: 'slug',
+      type: 'slug',
+      options: {
+        maxLength: 200,
+        slugify: (input: string) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 200),
+      },
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       title: 'Client',
       name: 'client',
       type: 'string',

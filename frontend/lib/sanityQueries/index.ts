@@ -33,26 +33,47 @@ export const mediaString = `
 
 export const siteSettingsQueryString = `
 	*[_type == 'siteSettings'][0] {
-		...,
-	}
-`;
-
-export const homePageQueryString = `
-	*[_type == 'homePage'][0] {
-		...,
-	}
-`;
-
-export const workPageQueryString = `
-	*[_type == "workPage"] {
-		...,
+		referenceTitle,
 		seoTitle,
 		seoDescription,
+		email,
+		instagramUrl,
+		showreel {
+			asset-> {
+				playbackId,
+			},
+		},
+	}
+`;
+
+export const informationPageQueryString = `
+	*[_type == 'informationPage'][0] {
+		heroContent,
+		services[] {
+			...
+		},
+		clients[] {
+			link,
+			name,
+		},
 	}
 `;
 
 export const projectsQueryString = `
 	*[_type == 'project'] | order(orderRank) [0...100] {
-		...,
+		title,
+		slug,
+		client,
+		services,
+		year,
+		media {
+			asset-> {
+				playbackId
+			}
+		},
+		credits[] {
+			title,
+			type,
+		},
 	}
 `;
