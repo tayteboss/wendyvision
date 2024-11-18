@@ -3,10 +3,6 @@ import styled from "styled-components";
 
 const TabTitleWrapper = styled(motion.h1)``;
 
-type Props = {
-  title: string;
-};
-
 const wrapperVariants = {
   hidden: {
     opacity: 0,
@@ -24,6 +20,10 @@ const wrapperVariants = {
       ease: "easeInOut",
     },
   },
+};
+
+type Props = {
+  title: string;
 };
 
 const TabTitle = (props: Props) => {

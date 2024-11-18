@@ -10,21 +10,15 @@ const Eye = (props: Props) => {
 
   useEffect(() => {
     if (useBlink > 0) {
-      // Start blinking
-      setBlink(true);
-      const firstBlink = setTimeout(() => setBlink(false), 200); // First blink duration
-      const secondBlinkStart = setTimeout(() => setBlink(true), 400); // Start second blink
-      const secondBlinkEnd = setTimeout(() => setBlink(false), 600); // End second blink
-      const thirdBlinkStart = setTimeout(() => setBlink(false), 800); // Start third blink
-      const thirdBlinkEnd = setTimeout(() => setBlink(false), 1000); // End third blink
+      const blinkIntervals = [500, 700, 900, 1100, 1300];
+      const blinkStates = [false, true, false, true, false];
+      const timeouts: NodeJS.Timeout[] = [];
 
-      return () => {
-        clearTimeout(firstBlink);
-        clearTimeout(secondBlinkStart);
-        clearTimeout(secondBlinkEnd);
-        clearTimeout(thirdBlinkStart);
-        clearTimeout(thirdBlinkEnd);
-      };
+      blinkIntervals.forEach((interval, index) => {
+        timeouts.push(setTimeout(() => setBlink(blinkStates[index]), interval));
+      });
+
+      return () => timeouts.forEach(clearTimeout);
     }
   }, [useBlink]);
 

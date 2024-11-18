@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { NextSeo } from "next-seo";
 import {
-  HomePageType,
   ProjectType,
   SiteSettingsType,
   TransitionsType,
@@ -65,6 +64,7 @@ const Page = (props: Props) => {
         menuIsActive={menuIsActive}
         projects={projects}
         tabActive={tabActive}
+        siteSettings={siteSettings}
         setMenuTabActive={setMenuTabActive}
         setMenuIsActive={setMenuIsActive}
         setTabActive={setTabActive}

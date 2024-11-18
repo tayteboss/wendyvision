@@ -39,6 +39,11 @@ export type SiteSettingsType = {
       playbackId: string;
     };
   };
+  primaryService: string;
+  secondaryServices: {
+    title: string;
+    superScript: string;
+  }[];
 };
 
 export type InformationPageType = {

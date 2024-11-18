@@ -1,14 +1,47 @@
 import styled from "styled-components";
 import pxToRem from "../../../utils/pxToRem";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { SiteSettingsType } from "../../../shared/types/types";
+import React, { useState, useEffect } from "react";
 
-const Title = styled(motion.h1)``;
+const Title = styled(motion.h1)`
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
+
+const TextContainer = styled(motion.div)`
+  position: absolute;
+  left: calc(100% + 4px);
+  white-space: nowrap;
+`;
 
 const SuperScript = styled.sup`
   font-size: ${pxToRem(12)};
   line-height: ${pxToRem(1)};
   letter-spacing: 0.02em;
 `;
+
+const textVariants = {
+  initial: (direction: number) => ({
+    opacity: 0,
+    filter: "blur(2px)",
+    y: direction > 0 ? 20 : -20, // Incoming from the bottom, outgoing to the top
+    transition: { duration: 0.5, ease: "easeInOut" },
+  }),
+  animate: {
+    opacity: 1,
+    filter: "blur(0px)",
+    y: 0,
+    transition: { duration: 0.5, ease: "easeInOut" },
+  },
+  exit: (direction: number) => ({
+    opacity: 0,
+    filter: "blur(2px)",
+    y: direction < 0 ? 20 : -20, // Outgoing to the top
+    transition: { duration: 0.5, ease: "easeInOut" },
+  }),
+};
 
 const wrapperVariants = {
   hidden: {
@@ -29,11 +62,50 @@ const wrapperVariants = {
   },
 };
 
-const HomeTitle = () => {
+type Props = {
+  siteSettings: SiteSettingsType;
+};
+
+const HomeTitle = ({ siteSettings }: Props) => {
+  const { primaryService, secondaryServices } = siteSettings;
+  const hasSecondaryServices = secondaryServices.length > 0;
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 for next, -1 for previous
+
+  useEffect(() => {
+    if (hasSecondaryServices) {
+      const interval = setInterval(() => {
+        setDirection(1); // Always moving to the next
+        setCurrentIndex(
+          (prevIndex) => (prevIndex + 1) % secondaryServices.length
+        );
+      }, 2000); // 2 seconds
+
+      return () => clearInterval(interval); // Cleanup on component unmount
+    }
+  }, [hasSecondaryServices, secondaryServices.length]);
+
   return (
     <Title variants={wrapperVariants}>
-      Offers Production <SuperScript>(P)</SuperScript> & Art Direction{" "}
-      <SuperScript>(AD)</SuperScript>
+      {primaryService || ""} /{" "}
+      {hasSecondaryServices && (
+        <AnimatePresence custom={direction} mode="popLayout">
+          <TextContainer
+            key={currentIndex}
+            variants={textVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            custom={direction}
+          >
+            {secondaryServices[currentIndex]?.title || ""}
+            <SuperScript>
+              {secondaryServices[currentIndex]?.superScript || ""}
+            </SuperScript>
+          </TextContainer>
+        </AnimatePresence>
+      )}
     </Title>
   );
 };

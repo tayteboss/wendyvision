@@ -31,6 +31,44 @@ export default {
       type: 'url',
     },
     {
+      title: 'Primary Service',
+      name: 'primaryService',
+      type: 'string',
+    },
+    {
+      title: 'Secondary Services',
+      name: 'secondaryServices',
+      type: 'array',
+      preview: {
+        select: {
+          title: 'title',
+        },
+        prepare(selection: any) {
+          const {title} = selection
+          return {
+            title,
+          }
+        },
+      },
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              title: 'Title',
+              name: 'title',
+              type: 'string',
+            },
+            {
+              title: 'Superscript',
+              name: 'superscript',
+              type: 'string',
+            },
+          ],
+        },
+      ],
+    },
+    {
       title: 'Showreel video',
       name: 'showreel',
       type: 'mux.video',

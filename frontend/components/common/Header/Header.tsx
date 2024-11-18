@@ -7,7 +7,7 @@ import MenuList from "../../blocks/MenuList";
 import HomeTitle from "../../elements/HomeTitle";
 import { AnimatePresence } from "framer-motion";
 import TabTitle from "../../elements/TabTitle";
-import { ProjectType } from "../../../shared/types/types";
+import { ProjectType, SiteSettingsType } from "../../../shared/types/types";
 import ProjectTitle from "../../elements/ProjectTitle";
 
 const HeaderWrapper = styled.header`
@@ -64,7 +64,7 @@ type Props = {
   menuIsActive: boolean;
   projects: ProjectType[];
   tabActive: string;
-  setTab: (tab: string) => void;
+  siteSettings: SiteSettingsType;
   setMenuTabActive: (tab: string) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
@@ -77,6 +77,7 @@ const Header = (props: Props) => {
     menuTabActive,
     menuIsActive,
     tabActive,
+    siteSettings,
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
@@ -91,7 +92,9 @@ const Header = (props: Props) => {
         </LogoWrapper>
         <AnimatePresence mode="wait">
           <Spacer key="spacer">/</Spacer>
-          {menuTabActive === "home" && <HomeTitle key="home" />}
+          {menuTabActive === "home" && (
+            <HomeTitle key="home" siteSettings={siteSettings} />
+          )}
           {menuTabActive === "workList" && <TabTitle key="work" title="Work" />}
           {menuTabActive === "information" && (
             <TabTitle key="information" title="Information" />
