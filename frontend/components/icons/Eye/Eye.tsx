@@ -10,7 +10,7 @@ const Eye = (props: Props) => {
 
   useEffect(() => {
     if (useBlink > 0) {
-      const blinkIntervals = [500, 700, 900, 1100, 1300];
+      const blinkIntervals = [100, 300, 500, 700, 900];
       const blinkStates = [false, true, false, true, false];
       const timeouts: NodeJS.Timeout[] = [];
 

@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import InformationTab from "../components/blocks/InformationTab";
 import ProjectTab from "../components/blocks/ProjectTab";
+import ContactTab from "../components/blocks/BlankTab";
+import BlankTab from "../components/blocks/BlankTab";
 
 const PageWrapper = styled(motion.div)``;
 
@@ -42,24 +44,15 @@ const Page = (props: Props) => {
   useEffect(() => {
     if (activeProjectId) {
       const project = projects.find(
-        (project) => project._id === activeProjectId
+        (project) => project.slug?.current === activeProjectId
       );
       setActiveProjectData(project);
     }
+    setBlinkCount(blinkCount + 1);
   }, [activeProjectId]);
 
   useEffect(() => {
     setBlinkCount(blinkCount + 1);
-
-    if (menuTabActive === "home") {
-      setTabActive("home");
-    }
-    if (menuTabActive === "information") {
-      setTabActive("information");
-    }
-    if (menuTabActive === "workList") {
-      setTabActive("work");
-    }
   }, [menuTabActive]);
 
   return (
@@ -80,6 +73,7 @@ const Page = (props: Props) => {
         projects={projects}
         tabActive={tabActive}
         siteSettings={siteSettings}
+        activeProjectData={activeProjectData}
         setMenuTabActive={setMenuTabActive}
         setMenuIsActive={setMenuIsActive}
         setTabActive={setTabActive}
@@ -94,11 +88,7 @@ const Page = (props: Props) => {
           />
         )}
         {tabActive === "project" && (
-          <ProjectTab
-            projects={projects}
-            activeProjectData={activeProjectData}
-            key="project-tab"
-          />
+          <ProjectTab activeProjectData={activeProjectData} key="project-tab" />
         )}
       </AnimatePresence>
     </PageWrapper>

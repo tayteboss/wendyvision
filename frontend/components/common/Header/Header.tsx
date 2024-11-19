@@ -24,17 +24,21 @@ const HeaderWrapper = styled.header`
   justify-content: space-between;
   gap: ${pxToRem(4)};
   width: 100%;
+  opacity: 1;
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 `;
 
 const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: ${pxToRem(3)};
+  padding-top: 4px;
 `;
 
 const LHS = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: ${pxToRem(4)};
 `;
 
@@ -65,6 +69,7 @@ type Props = {
   projects: ProjectType[];
   tabActive: string;
   siteSettings: SiteSettingsType;
+  activeProjectData: ProjectType | undefined;
   setMenuTabActive: (tab: string) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
@@ -79,6 +84,7 @@ const Header = (props: Props) => {
     menuIsActive,
     tabActive,
     siteSettings,
+    activeProjectData,
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
@@ -86,7 +92,7 @@ const Header = (props: Props) => {
   } = props;
 
   return (
-    <HeaderWrapper className="header">
+    <HeaderWrapper className={menuIsActive ? "" : "header"}>
       <LHS>
         {tabActive !== "information" && (
           <LogoWrapper>
@@ -96,17 +102,27 @@ const Header = (props: Props) => {
         )}
         <AnimatePresence mode="wait">
           {tabActive !== "information" && <Spacer key="spacer">/</Spacer>}
-          {menuTabActive === "home" && (
-            <HomeTitle key="home" siteSettings={siteSettings} />
-          )}
-          {menuTabActive === "workList" && <TabTitle key="work" title="Work" />}
-          {/* {menuTabActive === "information" && (
-            <TabTitle key="information" title="Information" />
-          )} */}
-          {menuTabActive === "contact" && (
+          {tabActive === "home" &&
+            menuTabActive !== "workList" &&
+            menuTabActive !== "contact" && (
+              <HomeTitle key="home" siteSettings={siteSettings} />
+            )}
+          {menuTabActive === "contact" && tabActive !== "information" && (
             <TabTitle key="contact" title="Contact" />
           )}
-          {menuTabActive === "project" && <ProjectTitle key="project" />}
+          {menuTabActive === "workList" && tabActive !== "information" && (
+            <TabTitle key="work" title="Work" />
+          )}
+          {tabActive === "project" &&
+            menuTabActive !== "workList" &&
+            menuTabActive !== "contact" && (
+              <ProjectTitle
+                key="project"
+                activeProjectData={activeProjectData}
+                projects={projects}
+                setActiveProjectId={setActiveProjectId}
+              />
+            )}
         </AnimatePresence>
       </LHS>
       <RHS>

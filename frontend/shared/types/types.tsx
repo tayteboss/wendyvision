@@ -68,6 +68,13 @@ export type ProjectType = {
   client: string;
   services: string[];
   year: string;
-  media: MediaType;
+  media: {
+    asset: {
+      playbackId: string;
+      data: {
+        duration: number;
+      };
+    };
+  };
   credits: any[];
 };

@@ -20,19 +20,19 @@ const InformationTabWrapper = styled(motion.section)`
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 2;
-  grid-column: 1 / 7;
+  grid-column: 1 / 8;
   padding-top: ${pxToRem(16)};
   margin-bottom: ${pxToRem(120)};
 
   * {
-    font-size: ${pxToRem(35)};
+    font-size: ${pxToRem(28)};
     font-family: var(--font-graphik-bold);
     color: var(--colour-white);
     line-height: 1.1;
   }
 
   p {
-    margin-bottom: ${pxToRem(32)};
+    margin-bottom: ${pxToRem(20)};
   }
 `;
 
@@ -100,9 +100,6 @@ const InformationTab = (props: Props) => {
       link: "https://tayte.co/",
     },
   ];
-
-  console.log("siteSettings", siteSettings);
-  console.log("data", data);
 
   return (
     <InformationTabWrapper

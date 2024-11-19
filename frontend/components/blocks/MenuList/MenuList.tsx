@@ -242,6 +242,7 @@ const MenuList = (props: Props) => {
                         setIsHovered={setIsHovered}
                         setMenuIsActive={setMenuIsActive}
                         setMenuTabActive={setMenuTabActive}
+                        setTabActive={setTabActive}
                       />
                     </EmblaSlide>
                   ))}

@@ -76,8 +76,11 @@ export const projectsQueryString = `
 		year,
 		media {
 			asset-> {
-				playbackId
-			}
+				playbackId,
+				data {
+					duration
+				}
+			},
 		},
 		credits[] {
 			title,

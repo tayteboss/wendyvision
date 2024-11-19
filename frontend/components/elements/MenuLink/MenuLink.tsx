@@ -70,9 +70,10 @@ type Props = {
   services?: string[];
   url?: string;
   isContactType?: boolean;
+  isInternalProjectType?: boolean;
   setIsHovered: (isHovered: boolean) => void;
-  setMenuIsActive: (isActive: boolean) => void;
-  setMenuTabActive: (tab: string) => void;
+  setMenuIsActive?: (isActive: boolean) => void;
+  setMenuTabActive?: (tab: string) => void;
   setTabActive?: (tab: string) => void;
   setActiveProjectId?: (id: string) => void;
 };
@@ -88,6 +89,7 @@ const MenuLink = (props: Props) => {
     services,
     url,
     isContactType,
+    isInternalProjectType,
     setIsHovered,
     setMenuIsActive,
     setMenuTabActive,
@@ -96,25 +98,36 @@ const MenuLink = (props: Props) => {
   } = props;
 
   const handleMenuIsActive = () => {
-    if (id === "workList") {
-      setMenuTabActive(id);
+    if (id === "home") {
+      setMenuTabActive && setMenuTabActive(id);
+      setTabActive && setTabActive("home");
+      setMenuIsActive && setMenuIsActive(false);
+      setIsHovered(false);
+    }
+    if (id === "information") {
+      setMenuTabActive && setMenuTabActive(id);
+      setTabActive && setTabActive(id);
+      setMenuIsActive && setMenuIsActive(false);
       setIsHovered(false);
     }
     if (id === "contact") {
-      setMenuTabActive(id);
+      setMenuTabActive && setMenuTabActive(id);
       setIsHovered(false);
     }
-    if (id === "home" || id === "information") {
-      setMenuTabActive(id);
-      setMenuIsActive(false);
+    if (id === "workList") {
+      setMenuTabActive && setMenuTabActive(id);
       setIsHovered(false);
     }
     if (isProjectType) {
-      setMenuTabActive("project");
+      setMenuTabActive && setMenuTabActive("project");
       setActiveProjectId && setActiveProjectId(id || "");
       setIsHovered(false);
-      setMenuIsActive(false);
+      setMenuIsActive && setMenuIsActive(false);
       setTabActive && setTabActive("project");
+    }
+    if (isInternalProjectType) {
+      setActiveProjectId && setActiveProjectId(id || "");
+      setIsHovered(false);
     }
   };
 

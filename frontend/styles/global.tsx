@@ -39,6 +39,12 @@ export const GlobalStyles = createGlobalStyle`
 		color: white;
 	}
 
+	.hide-header {
+		.header {
+			opacity: 0;
+		}
+	}
+
 	html {
 		background: var(--colour-white);
 		font-size: 16px;
