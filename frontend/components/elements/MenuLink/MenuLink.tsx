@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import pxToRem from "../../../utils/pxToRem";
+import Link from "next/link";
 
 const MenuLinkWrapper = styled(motion.button)<{ $isHovered: boolean }>`
   text-align: left;
@@ -17,6 +18,11 @@ const Inner = styled.span<{ $isHovered: boolean; $isActive: boolean }>`
   &:hover {
     opacity: 1 !important;
     filter: blur(0px) !important;
+  }
+
+  a {
+    color: var(--colour-white);
+    text-decoration: none;
   }
 `;
 
@@ -56,16 +62,19 @@ const wrapperVariants = {
 
 type Props = {
   title: string;
-  id: string;
+  id?: string;
   isHovered: boolean;
   isProjectType?: boolean;
   isActive: boolean;
   client?: string;
   services?: string[];
+  url?: string;
+  isContactType?: boolean;
   setIsHovered: (isHovered: boolean) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setMenuTabActive: (tab: string) => void;
   setTabActive?: (tab: string) => void;
+  setActiveProjectId?: (id: string) => void;
 };
 
 const MenuLink = (props: Props) => {
@@ -77,10 +86,13 @@ const MenuLink = (props: Props) => {
     isActive,
     client,
     services,
+    url,
+    isContactType,
     setIsHovered,
     setMenuIsActive,
     setMenuTabActive,
     setTabActive,
+    setActiveProjectId,
   } = props;
 
   const handleMenuIsActive = () => {
@@ -88,13 +100,18 @@ const MenuLink = (props: Props) => {
       setMenuTabActive(id);
       setIsHovered(false);
     }
-    if (id === "home" || id === "information" || id === "contact") {
+    if (id === "contact") {
+      setMenuTabActive(id);
+      setIsHovered(false);
+    }
+    if (id === "home" || id === "information") {
       setMenuTabActive(id);
       setMenuIsActive(false);
       setIsHovered(false);
     }
     if (isProjectType) {
       setMenuTabActive("project");
+      setActiveProjectId && setActiveProjectId(id || "");
       setIsHovered(false);
       setMenuIsActive(false);
       setTabActive && setTabActive("project");
@@ -132,7 +149,12 @@ const MenuLink = (props: Props) => {
             )}
           </Title>
         )}
-        {!isProjectType && title}
+        {isContactType && url && (
+          <Link href={url} target="_blank">
+            <Title>{title}</Title>
+          </Link>
+        )}
+        {!isProjectType && !isContactType && title}
       </Inner>
     </MenuLinkWrapper>
   );

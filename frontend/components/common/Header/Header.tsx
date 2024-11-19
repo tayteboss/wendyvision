@@ -68,6 +68,7 @@ type Props = {
   setMenuTabActive: (tab: string) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
+  setActiveProjectId?: (id: string) => void;
 };
 
 const Header = (props: Props) => {
@@ -81,28 +82,31 @@ const Header = (props: Props) => {
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
+    setActiveProjectId,
   } = props;
 
   return (
     <HeaderWrapper className="header">
       <LHS>
-        <LogoWrapper>
-          <Eye useBlink={blinkCount} />
-          <Logo />
-        </LogoWrapper>
+        {tabActive !== "information" && (
+          <LogoWrapper>
+            <Eye useBlink={blinkCount} />
+            <Logo />
+          </LogoWrapper>
+        )}
         <AnimatePresence mode="wait">
-          <Spacer key="spacer">/</Spacer>
+          {tabActive !== "information" && <Spacer key="spacer">/</Spacer>}
           {menuTabActive === "home" && (
             <HomeTitle key="home" siteSettings={siteSettings} />
           )}
           {menuTabActive === "workList" && <TabTitle key="work" title="Work" />}
-          {menuTabActive === "information" && (
+          {/* {menuTabActive === "information" && (
             <TabTitle key="information" title="Information" />
-          )}
+          )} */}
           {menuTabActive === "contact" && (
             <TabTitle key="contact" title="Contact" />
           )}
-          {tabActive === "project" && <ProjectTitle key="project" />}
+          {menuTabActive === "project" && <ProjectTitle key="project" />}
         </AnimatePresence>
       </LHS>
       <RHS>
@@ -114,9 +118,11 @@ const Header = (props: Props) => {
             menuTabActive={menuTabActive}
             menuIsActive={menuIsActive}
             projects={projects}
+            siteSettings={siteSettings}
             setMenuTabActive={setMenuTabActive}
             setMenuIsActive={setMenuIsActive}
             setTabActive={setTabActive}
+            setActiveProjectId={setActiveProjectId}
           />
         </MenuListWrapper>
         <MenuTrigger

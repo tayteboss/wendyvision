@@ -28,6 +28,11 @@ export default {
       ],
     },
     {
+      title: 'Hero Video',
+      name: 'heroVideo',
+      type: 'mux.video',
+    },
+    {
       title: 'Services',
       name: 'services',
       type: 'array',

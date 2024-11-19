@@ -17,11 +17,10 @@ const MenuTrigger = (props: Props) => {
     props;
 
   const handleClick = () => {
-    if (menuTabActive === "workList") {
+    if (menuTabActive === "workList" || menuTabActive === "contact") {
       setMenuTabActive("home");
       setMenuIsActive(false);
-    }
-    if (menuTabActive !== "workList") {
+    } else {
       setMenuIsActive(!menuIsActive);
     }
   };

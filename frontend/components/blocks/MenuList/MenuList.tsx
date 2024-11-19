@@ -3,7 +3,7 @@ import MenuLink from "../../elements/MenuLink";
 import { AnimatePresence, motion } from "framer-motion";
 import pxToRem from "../../../utils/pxToRem";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ProjectType } from "../../../shared/types/types";
+import { ProjectType, SiteSettingsType } from "../../../shared/types/types";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
@@ -49,9 +49,11 @@ type Props = {
   menuTabActive: string;
   menuIsActive: boolean;
   projects: ProjectType[];
+  siteSettings: SiteSettingsType;
   setMenuTabActive: (tab: string) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
+  setActiveProjectId?: (id: string) => void;
 };
 
 const MenuList = (props: Props) => {
@@ -59,9 +61,11 @@ const MenuList = (props: Props) => {
     menuTabActive,
     menuIsActive,
     projects,
+    siteSettings,
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
+    setActiveProjectId,
   } = props;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -85,6 +89,17 @@ const MenuList = (props: Props) => {
     {
       title: "Contact",
       id: "contact",
+    },
+  ];
+
+  const contactLinks = [
+    {
+      title: "Instagram",
+      url: siteSettings?.instagramUrl || "",
+    },
+    {
+      title: siteSettings?.email || "",
+      url: `mailto:${siteSettings?.email}`,
     },
   ];
 
@@ -213,7 +228,7 @@ const MenuList = (props: Props) => {
             animate="visible"
             exit="hidden"
           >
-            {menuTabActive !== "workList" && (
+            {menuTabActive !== "workList" && menuTabActive !== "contact" && (
               <EmblaCarousel className="embla" ref={emblaRef}>
                 <EmblaContainer className="embla__container">
                   {generalLinks.map((link, i) => (
@@ -245,19 +260,37 @@ const MenuList = (props: Props) => {
                         client={link.client}
                         services={link.services}
                         id={link.slug?.current}
-                        isProjectType
+                        isProjectType={true}
                         isHovered={isHovered}
                         isActive={activeSlideIndex === i}
                         setIsHovered={setIsHovered}
                         setMenuIsActive={setMenuIsActive}
                         setMenuTabActive={setMenuTabActive}
                         setTabActive={setTabActive}
+                        setActiveProjectId={setActiveProjectId}
                       />
                     </EmblaSlide>
                   ))}
                 </EmblaContainer>
               </EmblaCarousel>
             )}
+
+            {menuTabActive === "contact" &&
+              contactLinks.map((link, i) => (
+                <MenuLink
+                  key={i}
+                  title={link.title}
+                  url={link.url}
+                  isContactType={true}
+                  isActive={true}
+                  isHovered={isHovered}
+                  setIsHovered={setIsHovered}
+                  setMenuIsActive={setMenuIsActive}
+                  setMenuTabActive={setMenuTabActive}
+                  setTabActive={setTabActive}
+                  setActiveProjectId={setActiveProjectId}
+                />
+              ))}
           </MenuListWrapper>
         )}
       </AnimatePresence>

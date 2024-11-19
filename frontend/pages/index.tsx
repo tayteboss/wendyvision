@@ -1,18 +1,22 @@
 import styled from "styled-components";
 import { NextSeo } from "next-seo";
 import {
+  InformationPageType,
   ProjectType,
   SiteSettingsType,
   TransitionsType,
 } from "../shared/types/types";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import client from "../client";
 import {
+  informationPageQueryString,
   projectsQueryString,
   siteSettingsQueryString,
 } from "../lib/sanityQueries";
 import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
+import InformationTab from "../components/blocks/InformationTab";
+import ProjectTab from "../components/blocks/ProjectTab";
 
 const PageWrapper = styled(motion.div)``;
 
@@ -20,15 +24,29 @@ type Props = {
   projects: ProjectType[];
   siteSettings: SiteSettingsType;
   pageTransitionVariants: TransitionsType;
+  information: InformationPageType;
 };
 
 const Page = (props: Props) => {
-  const { projects, siteSettings, pageTransitionVariants } = props;
+  const { projects, siteSettings, information, pageTransitionVariants } = props;
 
   const [menuTabActive, setMenuTabActive] = useState("home");
   const [tabActive, setTabActive] = useState("home");
   const [menuIsActive, setMenuIsActive] = useState(false);
   const [blinkCount, setBlinkCount] = useState(0);
+  const [activeProjectId, setActiveProjectId] = useState("");
+  const [activeProjectData, setActiveProjectData] = useState<
+    ProjectType | undefined
+  >(undefined);
+
+  useEffect(() => {
+    if (activeProjectId) {
+      const project = projects.find(
+        (project) => project._id === activeProjectId
+      );
+      setActiveProjectData(project);
+    }
+  }, [activeProjectId]);
 
   useEffect(() => {
     setBlinkCount(blinkCount + 1);
@@ -38,9 +56,6 @@ const Page = (props: Props) => {
     }
     if (menuTabActive === "information") {
       setTabActive("information");
-    }
-    if (menuTabActive === "contact") {
-      setTabActive("contact");
     }
     if (menuTabActive === "workList") {
       setTabActive("work");
@@ -68,7 +83,24 @@ const Page = (props: Props) => {
         setMenuTabActive={setMenuTabActive}
         setMenuIsActive={setMenuIsActive}
         setTabActive={setTabActive}
+        setActiveProjectId={setActiveProjectId}
       />
+      <AnimatePresence mode="wait">
+        {tabActive === "information" && (
+          <InformationTab
+            siteSettings={siteSettings}
+            data={information}
+            key="information-tab"
+          />
+        )}
+        {tabActive === "project" && (
+          <ProjectTab
+            projects={projects}
+            activeProjectData={activeProjectData}
+            key="project-tab"
+          />
+        )}
+      </AnimatePresence>
     </PageWrapper>
   );
 };
@@ -76,11 +108,13 @@ const Page = (props: Props) => {
 export async function getStaticProps() {
   const siteSettings = await client.fetch(siteSettingsQueryString);
   const projects = await client.fetch(projectsQueryString);
+  const information = await client.fetch(informationPageQueryString);
 
   return {
     props: {
       projects,
       siteSettings,
+      information,
     },
   };
 }

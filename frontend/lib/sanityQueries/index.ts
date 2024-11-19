@@ -54,13 +54,16 @@ export const siteSettingsQueryString = `
 export const informationPageQueryString = `
 	*[_type == 'informationPage'][0] {
 		heroContent,
-		services[] {
-			...
-		},
+		services,
 		clients[] {
 			link,
 			name,
 		},
+		heroVideo {
+			asset-> {
+				playbackId
+			}
+		}
 	}
 `;
 

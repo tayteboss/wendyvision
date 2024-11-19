@@ -54,6 +54,11 @@ export type InformationPageType = {
     link: string;
     name: string;
   }>;
+  heroVideo: {
+    asset: {
+      playbackId: string;
+    };
+  };
 };
 
 export type ProjectType = {
