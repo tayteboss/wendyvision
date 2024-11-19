@@ -10,6 +10,7 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@babel/runtime": "^7.26.0",
     "@mux/mux-player-react": "^2.9.1",
     "@next/third-parties": "^14.2.5",
     "@portabletext/react": "^3.1.0",
