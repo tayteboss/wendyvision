@@ -14,7 +14,7 @@ const ControlsPanelWrapper = styled.div`
   padding: ${pxToRem(16)};
 
   @media ${(props) => props.theme.mediaBreakpoints.mobile} {
-    padding: ${pxToRem(16)} ${pxToRem(8)};
+    padding: ${pxToRem(16)};
   }
 `;
 

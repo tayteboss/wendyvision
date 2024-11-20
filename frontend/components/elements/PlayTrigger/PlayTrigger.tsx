@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import PauseSvg from "../../Svgs/PauseSvg";
-import PlaySvg from "../../Svgs/PlaySvg/PlaySvg";
 import pxToRem from "../../../utils/pxToRem";
 
 type Props = {
@@ -19,8 +17,8 @@ const PlayTriggerWrapper = styled.button`
   margin-right: ${pxToRem(16)};
   text-align: center;
 
-  @media ${(props) => props.theme.mediaBreakpoints.mobile} {
-    margin-right: ${pxToRem(8)};
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    display: none;
   }
 `;
 

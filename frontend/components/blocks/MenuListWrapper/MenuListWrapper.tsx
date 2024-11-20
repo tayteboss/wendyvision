@@ -13,6 +13,10 @@ const MenuListWrapperWrapper = styled.div`
 const CreditListWrapper = styled(motion.div)`
   display: flex;
   gap: ${pxToRem(8)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    display: none;
+  }
 `;
 
 const MenuSpacer = styled(motion.span)``;

@@ -4,10 +4,14 @@ import MuxPlayer from "@mux/mux-player-react/lazy";
 import VideoControls from "../VideoControls";
 import { useState, useRef, useEffect } from "react";
 
-const ProjectTabWrapper = styled.div`
+const DesktopProjectTabWrapper = styled.div`
   height: 100dvh;
   width: 100%;
   position: relative;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    display: none;
+  }
 `;
 
 const MediaWrapper = styled.div`
@@ -34,7 +38,7 @@ type Props = {
   activeProjectData: ProjectType | undefined;
 };
 
-const ProjectTab = (props: Props) => {
+const DesktopProjectTab = (props: Props) => {
   const { activeProjectData } = props;
 
   const [isLoading, setIsLoading] = useState(false);
@@ -89,7 +93,7 @@ const ProjectTab = (props: Props) => {
   }, []);
 
   return (
-    <ProjectTabWrapper className="project-tab">
+    <DesktopProjectTabWrapper className="project-tab">
       {activeProjectData?.media?.asset?.playbackId && (
         <MediaWrapper>
           <MuxPlayer
@@ -116,8 +120,8 @@ const ProjectTab = (props: Props) => {
         setIsPlaying={setIsPlaying}
         handleSeek={handleSeek}
       />
-    </ProjectTabWrapper>
+    </DesktopProjectTabWrapper>
   );
 };
 
-export default ProjectTab;
+export default DesktopProjectTab;

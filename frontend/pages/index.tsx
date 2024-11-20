@@ -16,10 +16,9 @@ import {
 import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import InformationTab from "../components/blocks/InformationTab";
-import ProjectTab from "../components/blocks/ProjectTab";
-import ContactTab from "../components/blocks/BlankTab";
-import BlankTab from "../components/blocks/BlankTab";
+import DesktopProjectTab from "../components/blocks/DesktopProjectTab";
 import CreditsModal from "../components/blocks/CreditsModal";
+import MobileProjectTab from "../components/blocks/MobileProjectTab";
 
 const PageWrapper = styled(motion.div)``;
 
@@ -96,7 +95,17 @@ const Page = (props: Props) => {
           />
         )}
         {tabActive === "project" && (
-          <ProjectTab activeProjectData={activeProjectData} key="project-tab" />
+          <DesktopProjectTab
+            activeProjectData={activeProjectData}
+            key="desktop-project-tab"
+          />
+        )}
+        {tabActive === "project" && (
+          <MobileProjectTab
+            activeProjectDataID={activeProjectData?.slug?.current}
+            projects={projects}
+            key="mobile-project-tab"
+          />
         )}
       </AnimatePresence>
     </PageWrapper>
