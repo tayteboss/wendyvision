@@ -11,6 +11,10 @@ const FooterCardWrapper = styled.div`
   position: relative;
   z-index: 2;
   align-self: end;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    align-self: flex-start;
+  }
 `;
 
 const Title = styled.h4`
@@ -30,12 +34,22 @@ const ListItem = styled.p`
   line-height: 1.4;
   letter-spacing: -0.05em;
 
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    font-size: ${pxToRem(12)};
+    letter-spacing: -0.05em;
+  }
+
   a {
     color: var(--colour-white);
     text-decoration: none;
     font-size: ${pxToRem(14)};
     line-height: 1.4;
     letter-spacing: -0.05em;
+
+    @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+      font-size: ${pxToRem(12)};
+      letter-spacing: -0.05em;
+    }
 
     &:hover {
       text-decoration: underline;

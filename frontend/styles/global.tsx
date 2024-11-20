@@ -112,6 +112,11 @@ export const GlobalStyles = createGlobalStyle`
 		line-height: ${pxToRem(22)};
 		letter-spacing: -0.05em;
 		text-transform: uppercase;
+
+		@media ${theme.mediaBreakpoints.tabletMedium} {
+			font-size: ${pxToRem(16)};
+			line-height: ${pxToRem(20)};
+		}
 	}
 
 	.type-small {

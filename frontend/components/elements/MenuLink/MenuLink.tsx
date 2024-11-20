@@ -24,9 +24,15 @@ const Inner = styled.span<{ $isHovered: boolean; $isActive: boolean }>`
     color: var(--colour-white);
     text-decoration: none;
   }
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    filter: blur(0px) !important;
+  }
 `;
 
-const Title = styled.span``;
+const Title = styled.span`
+  white-space: nowrap;
+`;
 
 const Spacer = styled.span`
   padding: 0 ${pxToRem(4)} 0 ${pxToRem(1)};
@@ -37,6 +43,10 @@ const SuperScript = styled.sup`
   line-height: ${pxToRem(1)};
   letter-spacing: 0.02em;
   padding-left: ${pxToRem(4)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    display: none;
+  }
 `;
 
 const wrapperVariants = {

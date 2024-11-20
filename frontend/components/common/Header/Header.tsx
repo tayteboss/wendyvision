@@ -1,20 +1,17 @@
 import styled from "styled-components";
 import pxToRem from "../../../utils/pxToRem";
-import Eye from "../../icons/Eye";
-import Logo from "../../icons/Logo";
 import MenuTrigger from "../../elements/MenuTrigger";
-import MenuList from "../../blocks/MenuList";
-import HomeTitle from "../../elements/HomeTitle";
-import { AnimatePresence, motion } from "framer-motion";
-import TabTitle from "../../elements/TabTitle";
 import { ProjectType, SiteSettingsType } from "../../../shared/types/types";
-import ProjectTitle from "../../elements/ProjectTitle";
-import CreditsTrigger from "../../elements/CreditsTrigger";
+import LogoElement from "../../elements/LogoElement";
+import HeaderTitles from "../../blocks/HeaderTitles";
+import MenuListWrapper from "../../blocks/MenuListWrapper";
+import useWindowDimensions from "../../../hooks/useWindowDimensions";
 
 const HeaderWrapper = styled.header`
   position: fixed;
   top: 50%;
   left: 0;
+  transform: translateY(calc(-1 * (var(--header-h) / 2)));
   z-index: 100;
   mix-blend-mode: difference;
   color: var(--colour-white);
@@ -28,13 +25,10 @@ const HeaderWrapper = styled.header`
   opacity: 1;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
-`;
 
-const LogoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${pxToRem(3)};
-  padding-top: 4px;
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    padding: 0 ${pxToRem(8)};
+  }
 `;
 
 const LHS = styled.div`
@@ -48,43 +42,45 @@ const RHS = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    justify-content: flex-end;
+  }
 `;
 
-const MenuListWrapper = styled.div`
-  display: flex;
-  gap: ${pxToRem(8)};
+const DesktopWrapper = styled.div`
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    display: none;
+  }
 `;
 
-const CreditListWrapper = styled(motion.div)`
-  display: flex;
-  gap: ${pxToRem(8)};
+const MobileWrapper = styled.div`
+  display: none;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    display: block;
+  }
 `;
 
-const Spacer = styled.span``;
+const MobileBackDrop = styled.div<{ $isActive: boolean }>`
+  display: none;
 
-const MenuSpacer = styled(motion.span)``;
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(4px);
+    z-index: 99;
+    pointer-events: none;
+    opacity: ${(props) => (props.$isActive ? 1 : 0)};
 
-const wrapperVariants = {
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-      when: "afterChildren",
-      staggerChildren: 0.01,
-      staggerDirection: -1,
-    },
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-    },
-  },
-};
+    transition: all var(--transition-speed-default) var(--transition-ease);
+  }
+`;
 
 type Props = {
   menuTabActive: string;
@@ -117,100 +113,95 @@ const Header = (props: Props) => {
     setCreditsIsActive,
   } = props;
 
+  const { width } = useWindowDimensions();
+
+  const wrapperVariants = {
+    hidden: {
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        when: "afterChildren",
+      },
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+        delay: width < 1125 ? 0.3 : 0,
+      },
+    },
+  };
+
   return (
-    <HeaderWrapper className={menuIsActive ? "" : "header"}>
-      <LHS>
-        {tabActive !== "information" && (
-          <LogoWrapper>
-            <Eye useBlink={blinkCount} />
-            <Logo />
-          </LogoWrapper>
-        )}
-        <AnimatePresence mode="wait">
-          {tabActive !== "information" && <Spacer key="spacer">/</Spacer>}
-          {tabActive === "home" &&
-            menuTabActive !== "workList" &&
-            menuTabActive !== "contact" && (
-              <HomeTitle key="home" siteSettings={siteSettings} />
-            )}
-          {menuTabActive === "contact" && tabActive !== "information" && (
-            <TabTitle key="contact" title="Contact" />
-          )}
-          {menuTabActive === "workList" && tabActive !== "information" && (
-            <TabTitle key="work" title="Work" />
-          )}
-          {tabActive === "project" &&
-            menuTabActive !== "workList" &&
-            menuTabActive !== "contact" && (
-              <ProjectTitle
-                key="project"
-                activeProjectData={activeProjectData}
-                projects={projects}
-                setActiveProjectId={setActiveProjectId}
-              />
-            )}
-        </AnimatePresence>
-      </LHS>
-      <RHS>
-        <MenuListWrapper>
-          <AnimatePresence mode="wait">
-            {menuIsActive && (
-              <MenuSpacer
-                key="spacer"
-                variants={wrapperVariants}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-              >
-                /
-              </MenuSpacer>
-            )}
-            {tabActive === "project" && !menuIsActive && (
-              <CreditListWrapper
-                variants={wrapperVariants}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                key="credit-list"
-              >
-                <MenuSpacer
-                  key="spacer-2"
-                  variants={wrapperVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                >
-                  /
-                </MenuSpacer>
-                <CreditsTrigger
-                  key="credits-trigger"
-                  wrapperVariants={wrapperVariants}
-                  setCreditsIsActive={setCreditsIsActive}
-                />
-              </CreditListWrapper>
-            )}
-            <MenuList
-              key="menu-list"
-              menuTabActive={menuTabActive}
+    <>
+      <HeaderWrapper className={menuIsActive ? "" : "header"}>
+        <LHS>
+          <DesktopWrapper>
+            <LogoElement
+              blinkCount={blinkCount}
+              isActive={tabActive !== "information"}
+            />
+          </DesktopWrapper>
+          <MobileWrapper>
+            <LogoElement
+              blinkCount={blinkCount}
+              isActive={tabActive !== "information" && !menuIsActive}
+            />
+          </MobileWrapper>
+          <MobileWrapper>
+            <MenuListWrapper
               menuIsActive={menuIsActive}
+              wrapperVariants={wrapperVariants}
+              tabActive={tabActive}
+              menuTabActive={menuTabActive}
               projects={projects}
               siteSettings={siteSettings}
-              wrapperVariants={wrapperVariants}
+              setCreditsIsActive={setCreditsIsActive}
               setMenuTabActive={setMenuTabActive}
               setMenuIsActive={setMenuIsActive}
               setTabActive={setTabActive}
               setActiveProjectId={setActiveProjectId}
             />
-          </AnimatePresence>
-        </MenuListWrapper>
-        <MenuTrigger
-          menuIsActive={menuIsActive}
-          menuTabActive={menuTabActive}
-          setMenuIsActive={setMenuIsActive}
-          setMenuTabActive={setMenuTabActive}
-        />
-      </RHS>
-    </HeaderWrapper>
+          </MobileWrapper>
+          <HeaderTitles
+            tabActive={tabActive}
+            menuTabActive={menuTabActive}
+            siteSettings={siteSettings}
+            activeProjectData={activeProjectData}
+            projects={projects}
+            setActiveProjectId={setActiveProjectId}
+          />
+        </LHS>
+        <RHS>
+          <DesktopWrapper>
+            <MenuListWrapper
+              menuIsActive={menuIsActive}
+              wrapperVariants={wrapperVariants}
+              tabActive={tabActive}
+              menuTabActive={menuTabActive}
+              projects={projects}
+              siteSettings={siteSettings}
+              setCreditsIsActive={setCreditsIsActive}
+              setMenuTabActive={setMenuTabActive}
+              setMenuIsActive={setMenuIsActive}
+              setTabActive={setTabActive}
+              setActiveProjectId={setActiveProjectId}
+            />
+          </DesktopWrapper>
+          <MenuTrigger
+            menuIsActive={menuIsActive}
+            menuTabActive={menuTabActive}
+            setMenuIsActive={setMenuIsActive}
+            setMenuTabActive={setMenuTabActive}
+          />
+        </RHS>
+      </HeaderWrapper>
+      <MobileBackDrop $isActive={menuIsActive} />
+    </>
   );
 };
 
