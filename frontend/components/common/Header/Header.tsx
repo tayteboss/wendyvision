@@ -5,10 +5,11 @@ import Logo from "../../icons/Logo";
 import MenuTrigger from "../../elements/MenuTrigger";
 import MenuList from "../../blocks/MenuList";
 import HomeTitle from "../../elements/HomeTitle";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import TabTitle from "../../elements/TabTitle";
 import { ProjectType, SiteSettingsType } from "../../../shared/types/types";
 import ProjectTitle from "../../elements/ProjectTitle";
+import CreditsTrigger from "../../elements/CreditsTrigger";
 
 const HeaderWrapper = styled.header`
   position: fixed;
@@ -54,13 +55,36 @@ const MenuListWrapper = styled.div`
   gap: ${pxToRem(8)};
 `;
 
+const CreditListWrapper = styled(motion.div)`
+  display: flex;
+  gap: ${pxToRem(8)};
+`;
+
 const Spacer = styled.span``;
 
-const MenuSpacer = styled.span<{ $isActive: boolean }>`
-  opacity: ${(props) => (props.$isActive ? 1 : 0)};
+const MenuSpacer = styled(motion.span)``;
 
-  transition: all var(--transition-speed-default) var(--transition-ease);
-`;
+const wrapperVariants = {
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      when: "afterChildren",
+      staggerChildren: 0.01,
+      staggerDirection: -1,
+    },
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+};
 
 type Props = {
   menuTabActive: string;
@@ -74,6 +98,7 @@ type Props = {
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
   setActiveProjectId?: (id: string) => void;
+  setCreditsIsActive: (isActive: boolean) => void;
 };
 
 const Header = (props: Props) => {
@@ -89,6 +114,7 @@ const Header = (props: Props) => {
     setMenuIsActive,
     setTabActive,
     setActiveProjectId,
+    setCreditsIsActive,
   } = props;
 
   return (
@@ -127,19 +153,55 @@ const Header = (props: Props) => {
       </LHS>
       <RHS>
         <MenuListWrapper>
-          <MenuSpacer key="spacer" $isActive={menuIsActive}>
-            /
-          </MenuSpacer>
-          <MenuList
-            menuTabActive={menuTabActive}
-            menuIsActive={menuIsActive}
-            projects={projects}
-            siteSettings={siteSettings}
-            setMenuTabActive={setMenuTabActive}
-            setMenuIsActive={setMenuIsActive}
-            setTabActive={setTabActive}
-            setActiveProjectId={setActiveProjectId}
-          />
+          <AnimatePresence mode="wait">
+            {menuIsActive && (
+              <MenuSpacer
+                key="spacer"
+                variants={wrapperVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+              >
+                /
+              </MenuSpacer>
+            )}
+            {tabActive === "project" && !menuIsActive && (
+              <CreditListWrapper
+                variants={wrapperVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                key="credit-list"
+              >
+                <MenuSpacer
+                  key="spacer-2"
+                  variants={wrapperVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                >
+                  /
+                </MenuSpacer>
+                <CreditsTrigger
+                  key="credits-trigger"
+                  wrapperVariants={wrapperVariants}
+                  setCreditsIsActive={setCreditsIsActive}
+                />
+              </CreditListWrapper>
+            )}
+            <MenuList
+              key="menu-list"
+              menuTabActive={menuTabActive}
+              menuIsActive={menuIsActive}
+              projects={projects}
+              siteSettings={siteSettings}
+              wrapperVariants={wrapperVariants}
+              setMenuTabActive={setMenuTabActive}
+              setMenuIsActive={setMenuIsActive}
+              setTabActive={setTabActive}
+              setActiveProjectId={setActiveProjectId}
+            />
+          </AnimatePresence>
         </MenuListWrapper>
         <MenuTrigger
           menuIsActive={menuIsActive}

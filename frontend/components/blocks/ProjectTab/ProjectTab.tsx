@@ -89,7 +89,7 @@ const ProjectTab = (props: Props) => {
   }, []);
 
   return (
-    <ProjectTabWrapper>
+    <ProjectTabWrapper className="project-tab">
       {activeProjectData?.media?.asset?.playbackId && (
         <MediaWrapper>
           <MuxPlayer

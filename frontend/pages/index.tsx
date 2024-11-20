@@ -19,6 +19,7 @@ import InformationTab from "../components/blocks/InformationTab";
 import ProjectTab from "../components/blocks/ProjectTab";
 import ContactTab from "../components/blocks/BlankTab";
 import BlankTab from "../components/blocks/BlankTab";
+import CreditsModal from "../components/blocks/CreditsModal";
 
 const PageWrapper = styled(motion.div)``;
 
@@ -37,6 +38,7 @@ const Page = (props: Props) => {
   const [menuIsActive, setMenuIsActive] = useState(false);
   const [blinkCount, setBlinkCount] = useState(0);
   const [activeProjectId, setActiveProjectId] = useState("");
+  const [creditsIsActive, setCreditsIsActive] = useState(false);
   const [activeProjectData, setActiveProjectData] = useState<
     ProjectType | undefined
   >(undefined);
@@ -78,6 +80,12 @@ const Page = (props: Props) => {
         setMenuIsActive={setMenuIsActive}
         setTabActive={setTabActive}
         setActiveProjectId={setActiveProjectId}
+        setCreditsIsActive={setCreditsIsActive}
+      />
+      <CreditsModal
+        creditsIsActive={creditsIsActive}
+        activeProjectData={activeProjectData}
+        setCreditsIsActive={setCreditsIsActive}
       />
       <AnimatePresence mode="wait">
         {tabActive === "information" && (

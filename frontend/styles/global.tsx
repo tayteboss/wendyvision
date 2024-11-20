@@ -43,6 +43,9 @@ export const GlobalStyles = createGlobalStyle`
 		.header {
 			opacity: 0;
 		}
+		.project-tab {
+			cursor: none;
+		}
 	}
 
 	html {

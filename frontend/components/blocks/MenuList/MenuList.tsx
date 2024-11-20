@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import MenuLink from "../../elements/MenuLink";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import pxToRem from "../../../utils/pxToRem";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ProjectType, SiteSettingsType } from "../../../shared/types/types";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
-const MenuOuter = styled.div`
+const MenuOuter = styled(motion.div)`
   min-height: ${pxToRem(22)};
 `;
 
-const MenuListWrapper = styled(motion.div)`
+const MenuListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -23,33 +23,12 @@ const EmblaContainer = styled.div``;
 
 const EmblaSlide = styled.div``;
 
-const wrapperVariants = {
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-      when: "afterChildren",
-      staggerChildren: 0.01,
-      staggerDirection: -1,
-    },
-  },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-    },
-  },
-};
-
 type Props = {
   menuTabActive: string;
   menuIsActive: boolean;
   projects: ProjectType[];
   siteSettings: SiteSettingsType;
+  wrapperVariants: any;
   setMenuTabActive: (tab: string) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
@@ -62,6 +41,7 @@ const MenuList = (props: Props) => {
     menuIsActive,
     projects,
     siteSettings,
+    wrapperVariants,
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
@@ -219,15 +199,16 @@ const MenuList = (props: Props) => {
   }, [emblaApi]);
 
   return (
-    <MenuOuter ref={rootNodeRef}>
-      <AnimatePresence>
-        {menuIsActive && (
-          <MenuListWrapper
-            variants={wrapperVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-          >
+    <>
+      {menuIsActive && (
+        <MenuOuter
+          ref={rootNodeRef}
+          variants={wrapperVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+        >
+          <MenuListWrapper>
             {menuTabActive !== "workList" && menuTabActive !== "contact" && (
               <EmblaCarousel className="embla" ref={emblaRef}>
                 <EmblaContainer className="embla__container">
@@ -293,9 +274,9 @@ const MenuList = (props: Props) => {
                 />
               ))}
           </MenuListWrapper>
-        )}
-      </AnimatePresence>
-    </MenuOuter>
+        </MenuOuter>
+      )}
+    </>
   );
 };
 
