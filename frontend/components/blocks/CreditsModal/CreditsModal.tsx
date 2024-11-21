@@ -25,12 +25,11 @@ const LogoWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: ${pxToRem(16)};
-  transform: translateY(calc(50% + 4px));
+  transform: translateY(-50%);
   z-index: 1;
   display: flex;
   align-items: center;
   gap: ${pxToRem(3)};
-  padding-top: 4px;
   overflow: scroll;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
@@ -44,7 +43,7 @@ const CloseTrigger = styled.button`
   position: absolute;
   top: 50%;
   right: ${pxToRem(16)};
-  transform: translateY(calc(50% + 4px));
+  transform: translateY(-50%);
   z-index: 1;
   color: var(--colour-white);
   text-align: right;

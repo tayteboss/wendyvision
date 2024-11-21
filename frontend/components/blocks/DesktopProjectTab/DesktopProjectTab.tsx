@@ -104,7 +104,7 @@ const DesktopProjectTab = (props: Props) => {
             loop={true}
             thumbnailTime={1}
             preload="auto"
-            muted
+            muted={isMuted}
             playsInline={true}
             loading="viewport"
             style={{ aspectRatio: 16 / 9 }}

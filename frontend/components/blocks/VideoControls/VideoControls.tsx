@@ -91,6 +91,57 @@ const VideoControls = (props: Props) => {
     }
   }, [viewportWidth]);
 
+  // useEffect(() => {
+  //   let timeout: any;
+
+  //   const body = document.querySelector("body");
+
+  //   if (!body) return;
+
+  //   if (!isActive) {
+  //     body.classList.add("hide-cursor");
+  //   } else {
+  //     body.classList.remove("hide-cursor");
+  //   }
+
+  //   const handleMenuActivity = (isActive: boolean) => {
+  //     if (isActive) {
+  //       body.classList.remove("hide-header");
+  //     } else {
+  //       body.classList.add("hide-header");
+  //     }
+  //   };
+
+  //   const handleMouseInactive = () => {
+  //     timeout = setTimeout(
+  //       () => {
+  //         setIsActive(false);
+  //       },
+  //       isMobile ? 6000 : 2000
+  //     );
+  //   };
+
+  //   // Call handleMouseInactive initially
+  //   handleMouseInactive();
+  //   handleMenuActivity(isActive);
+
+  //   const handleMouseActive = () => {
+  //     clearTimeout(timeout);
+  //     setIsActive(true);
+
+  //     // Restart the timer when the mouse becomes active again
+  //     handleMouseInactive();
+  //   };
+
+  //   const throttledHandleMouseMove = throttle(handleMouseActive, 200);
+  //   window.addEventListener("mousemove", throttledHandleMouseMove);
+
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleMouseActive);
+  //     clearTimeout(timeout);
+  //   };
+  // }, [isActive]);
+
   return (
     <AnimatePresence>
       <VideoControlsWrapper
