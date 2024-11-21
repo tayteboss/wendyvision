@@ -14,7 +14,7 @@ const ControlsPanelWrapper = styled.div`
   padding: ${pxToRem(16)};
 
   @media ${(props) => props.theme.mediaBreakpoints.mobile} {
-    padding: ${pxToRem(8)};
+    padding: ${pxToRem(8)} ${pxToRem(16)};
   }
 `;
 
@@ -22,6 +22,10 @@ const BottomBar = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+
+  @media ${(props) => props.theme.mediaBreakpoints.mobile} {
+    justify-content: flex-end;
+  }
 `;
 
 type Props = {

@@ -13,6 +13,7 @@ const SeekBarWrapper = styled.div`
 
   @media ${(props) => props.theme.mediaBreakpoints.mobile} {
     column-gap: ${pxToRem(8)};
+    display: none;
   }
 `;
 

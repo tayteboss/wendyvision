@@ -21,7 +21,12 @@ const EmblaCarousel = styled.div``;
 
 const EmblaContainer = styled.div``;
 
-const EmblaSlide = styled.div``;
+const EmblaSlide = styled.div`
+  @media ${(props) => props.theme.mediaBreakpoints.mobile} {
+    overflow: hidden;
+    margin-bottom: ${pxToRem(2)};
+  }
+`;
 
 type Props = {
   menuTabActive: string;

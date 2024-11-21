@@ -36,7 +36,7 @@ const ContentWrapper = styled.div<{ $isActive: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
-  padding: ${pxToRem(16)};
+  padding: ${pxToRem(16)} ${pxToRem(80)} ${pxToRem(16)} ${pxToRem(16)};
   z-index: 10;
   mix-blend-mode: difference;
   color: var(--colour-white);
@@ -137,7 +137,10 @@ const MobileProjectCard = ({
   }, []);
 
   return (
-    <MobileProjectCardWrapper $isActiveIndex={isActiveIndex}>
+    <MobileProjectCardWrapper
+      $isActiveIndex={isActiveIndex}
+      onClick={() => handleVideoState()}
+    >
       {media.asset?.playbackId && (
         <MediaWrapper>
           <MuxPlayer
@@ -149,6 +152,7 @@ const MobileProjectCard = ({
             muted={isMuted}
             style={{ aspectRatio: "16 / 9" }}
             onCanPlay={() => handleVideoState()}
+            onLoadedData={() => handleVideoState()}
           />
         </MediaWrapper>
       )}

@@ -18,6 +18,11 @@ const Inner = styled.span<{ $isHovered: boolean; $isActive: boolean }>`
   &:hover {
     opacity: 1 !important;
     filter: blur(0px) !important;
+
+    @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+      opacity: ${(props) =>
+        !props.$isActive ? "0.25" : props.$isHovered ? "0.25" : "1"} !important;
+    }
   }
 
   a {
@@ -32,6 +37,10 @@ const Inner = styled.span<{ $isHovered: boolean; $isActive: boolean }>`
 
 const Title = styled.span`
   white-space: nowrap;
+
+  @media ${(props) => props.theme.mediaBreakpoints.mobile} {
+    white-space: unset;
+  }
 `;
 
 const Spacer = styled.span`

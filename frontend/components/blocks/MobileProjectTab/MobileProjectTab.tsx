@@ -60,7 +60,7 @@ const MobileProjectTab = (props: Props) => {
       emblaApi.on("pointerUp", () => {
         setTimeout(() => {
           setActiveSlide(emblaApi.selectedScrollSnap());
-        }, 200);
+        }, 300);
       });
     }
   }, [emblaApi, activeProjectDataID]);
@@ -80,7 +80,6 @@ const MobileProjectTab = (props: Props) => {
                 media={project?.media}
                 credits={project?.credits}
                 isActiveIndex={activeSlide === i}
-                emblaApi={emblaApi}
               />
             </EmblaSlide>
           ))}

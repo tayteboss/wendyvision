@@ -13,7 +13,10 @@ const MuteTriggerWrapper = styled.button`
   text-align: center;
 
   @media ${(props) => props.theme.mediaBreakpoints.mobile} {
-    margin-right: ${pxToRem(16)};
+    margin-right: 0;
+    font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
+    letter-spacing: -0.05em;
   }
 `;
 
