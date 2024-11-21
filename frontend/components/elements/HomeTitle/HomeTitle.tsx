@@ -20,6 +20,8 @@ const SuperScript = styled.sup`
   font-size: ${pxToRem(12)};
   line-height: ${pxToRem(1)};
   letter-spacing: 0.02em;
+  color: var(--colour-white);
+  padding-left: ${pxToRem(4)};
 `;
 
 const textVariants = {
@@ -101,7 +103,7 @@ const HomeTitle = ({ siteSettings }: Props) => {
           >
             {secondaryServices[currentIndex]?.title || ""}
             <SuperScript>
-              {secondaryServices[currentIndex]?.superScript || ""}
+              ({secondaryServices[currentIndex]?.superscript || ""})
             </SuperScript>
           </TextContainer>
         </AnimatePresence>

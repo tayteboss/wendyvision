@@ -46,7 +46,7 @@ export const siteSettingsQueryString = `
 		primaryService,
 		secondaryServices[] {
 			title,
-			superScript,
+			superscript,
 		},
 	}
 `;

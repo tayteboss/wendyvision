@@ -15,6 +15,10 @@ const InformationTabWrapper = styled(motion.section)`
   background: var(--colour-black);
   min-height: 100vh;
   padding-bottom: ${pxToRem(24)};
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
+    padding-bottom: 0;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -22,12 +26,11 @@ const ContentWrapper = styled.div`
   z-index: 2;
   grid-column: 1 / 8;
   padding-top: ${pxToRem(16)};
-  margin-bottom: ${pxToRem(120)};
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
     width: 100%;
     padding-right: ${pxToRem(64)};
-    margin-bottom: ${pxToRem(80)};
+    padding-top: 0;
   }
 
   * {
@@ -51,14 +54,6 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const Blank = styled.div`
-  grid-column: 7 / -1;
-
-  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
-    display: none;
-  }
-`;
-
 const MediaWrapper = styled.div`
   position: fixed;
   top: 0;
@@ -75,16 +70,30 @@ const MediaWrapper = styled.div`
 `;
 
 const DesktopWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  gap: ${pxToRem(120)};
+
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
     display: none;
   }
 `;
 
+const DesktopTopWrapper = styled.div``;
+
+const DesktopBottomWrapper = styled.div``;
+
 const MobileWrapper = styled.div`
   display: none;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    padding: ${pxToRem(16)} 0;
   }
 `;
 
@@ -164,18 +173,23 @@ const InformationTab = (props: Props) => {
       <LayoutWrapper>
         {/* DESKTOP */}
         <DesktopWrapper>
-          <LayoutGrid>
-            {data?.heroContent && (
-              <ContentWrapper>
-                <PortableText value={data.heroContent} />
-              </ContentWrapper>
-            )}
-            <Blank />
-            <FooterCard title="Select Clients" data={data?.clients} />
-            <FooterCard title="Services" data={data?.services} isService />
-            <FooterCard title="Contact" data={contactList} />
-            <FooterCard title="Credits" data={creditList} />
-          </LayoutGrid>
+          <DesktopTopWrapper>
+            <LayoutGrid>
+              {data?.heroContent && (
+                <ContentWrapper>
+                  <PortableText value={data.heroContent} />
+                </ContentWrapper>
+              )}
+            </LayoutGrid>
+          </DesktopTopWrapper>
+          <DesktopBottomWrapper>
+            <LayoutGrid>
+              <FooterCard title="Select Clients" data={data?.clients} />
+              <FooterCard title="Services" data={data?.services} isService />
+              <FooterCard title="Contact" data={contactList} />
+              <FooterCard title="Credits" data={creditList} />
+            </LayoutGrid>
+          </DesktopBottomWrapper>
         </DesktopWrapper>
         {/* MOBILE */}
         <MobileWrapper>

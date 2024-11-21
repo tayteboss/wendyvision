@@ -42,7 +42,7 @@ export type SiteSettingsType = {
   primaryService: string;
   secondaryServices: {
     title: string;
-    superScript: string;
+    superscript: string;
   }[];
 };
 
