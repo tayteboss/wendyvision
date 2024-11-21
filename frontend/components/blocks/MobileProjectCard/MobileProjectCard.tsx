@@ -1,9 +1,9 @@
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { ProjectType } from "../../../shared/types/types";
 import MuxPlayer from "@mux/mux-player-react/lazy";
-import VideoControls from "../VideoControls";
-import { useState, useRef, useEffect } from "react";
 import pxToRem from "../../../utils/pxToRem";
+import VideoControls from "../VideoControls";
 import MobileCreditsModal from "../MobileCreditsModal";
 
 const MobileProjectCardWrapper = styled.div<{ $isActiveIndex: boolean }>`
@@ -11,7 +11,6 @@ const MobileProjectCardWrapper = styled.div<{ $isActiveIndex: boolean }>`
   padding-top: 56.25%;
   position: relative;
   filter: brightness(${(props) => (props.$isActiveIndex ? "1" : "0.15")});
-
   transition: all var(--transition-speed-slow) var(--transition-ease);
 `;
 
@@ -27,10 +26,8 @@ const MediaWrapper = styled.div`
     --media-object-fit: contain;
     --media-object-position: center;
     --controls: none;
-
     height: 100%;
     width: 100%;
-
     transition: all var(--transition-speed-slow) var(--transition-ease);
   }
 `;
@@ -44,6 +41,9 @@ const ContentWrapper = styled.div<{ $isActive: boolean }>`
   mix-blend-mode: difference;
   color: var(--colour-white);
   opacity: ${(props) => (props.$isActive ? "1" : "0")};
+  font-size: ${pxToRem(12)};
+  line-height: ${pxToRem(12)};
+  letter-spacing: -0.05em;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
 `;
@@ -58,18 +58,11 @@ const CreditsTrigger = styled.button<{ $isActive: boolean }>`
   color: var(--colour-white);
   opacity: ${(props) => (props.$isActive ? "1" : "0")};
   text-align: right;
+  font-size: ${pxToRem(12)};
+  line-height: ${pxToRem(12)};
+  letter-spacing: -0.05em;
 
   transition: all var(--transition-speed-default) var(--transition-ease);
-`;
-
-const Spacer = styled.span`
-  padding: 0 ${pxToRem(2)};
-  color: var(--colour-white);
-`;
-
-const SuperScript = styled.span`
-  padding-left: ${pxToRem(4)};
-  color: var(--colour-white);
 `;
 
 type Props = {
@@ -83,48 +76,65 @@ type Props = {
   isActiveIndex: boolean;
 };
 
-const MobileProjectCard = (props: Props) => {
-  const { title, id, client, services, year, media, credits, isActiveIndex } =
-    props;
-
+const MobileProjectCard = ({
+  title,
+  client,
+  services,
+  year,
+  media,
+  credits,
+  isActiveIndex,
+}: Props) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [videoLength, setVideoLength] = useState(media?.asset?.data?.duration);
   const [creditsIsActive, setCreditsIsActive] = useState(false);
+  const muxPlayerRef = useRef<HTMLVideoElement | null>(null);
 
-  const muxPlayerRef = useRef<any>(null);
-
-  const handleSeek = (time: number) => {
-    if (muxPlayerRef?.current) {
-      muxPlayerRef.current.currentTime = time;
+  const handleVideoState = () => {
+    if (muxPlayerRef.current) {
+      if (isActiveIndex) {
+        muxPlayerRef.current.play().catch((error) => {
+          console.error("Error playing video:", error);
+        });
+        setIsPlaying(true);
+      } else {
+        muxPlayerRef.current.pause();
+        setIsPlaying(false);
+      }
     }
   };
 
   useEffect(() => {
+    handleVideoState();
+  }, [isActiveIndex, muxPlayerRef]);
+
+  useEffect(() => {
     if (muxPlayerRef.current) {
-      if (isActiveIndex) {
-        muxPlayerRef.current.play();
-      } else {
-        muxPlayerRef.current.pause();
-      }
+      // Ensure video state is updated correctly on initial load and subsequent changes
+      handleVideoState();
     }
   }, [isActiveIndex, muxPlayerRef]);
 
   useEffect(() => {
-    setVideoLength(media?.asset?.data?.duration);
+    if (isActiveIndex && muxPlayerRef.current) {
+      // Play the video on the initial load if it's the active index
+      muxPlayerRef.current.play().catch((error) => {
+        console.error("Error playing video on initial load:", error);
+      });
+      setIsPlaying(true);
+    }
+  }, [muxPlayerRef]); // Run only once on mount
 
-    // Get the current time of the video
+  useEffect(() => {
     const interval = setInterval(() => {
       if (muxPlayerRef.current) {
-        let currentTime = muxPlayerRef.current?.currentTime;
-
-        setCurrentTime(currentTime);
+        setCurrentTime(muxPlayerRef.current.currentTime || 0);
       }
     }, 250);
 
     return () => clearInterval(interval);
-  }, [media]);
+  }, []);
 
   return (
     <MobileProjectCardWrapper $isActiveIndex={isActiveIndex}>
@@ -134,36 +144,20 @@ const MobileProjectCard = (props: Props) => {
             ref={muxPlayerRef}
             streamType="on-demand"
             playbackId={media.asset.playbackId}
-            autoPlay="muted"
-            loop={true}
-            thumbnailTime={1}
-            preload="auto"
-            muted
-            playsInline={true}
-            loading="viewport"
-            style={{ aspectRatio: 16 / 9 }}
+            autoPlay={false}
+            loop
+            muted={isMuted}
+            style={{ aspectRatio: "16 / 9" }}
+            onCanPlay={() => handleVideoState()}
           />
         </MediaWrapper>
       )}
-      <ContentWrapper $isActive={isActiveIndex} className="type-small">
-        {client || ""} <Spacer>/</Spacer>
-        {title || ""}
-        {services.length > 0 && (
-          <SuperScript className="type-small">
-            (
-            {services.map((service: string, i: number) => (
-              <span key={`service-${i}`}>
-                {service}
-                {i < services.length - 1 && " —"}
-              </span>
-            ))}
-            )
-          </SuperScript>
-        )}
+      <ContentWrapper $isActive={isActiveIndex}>
+        {client} / {title}
+        {services?.length > 0 && ` (${services.join(", ")})`}
       </ContentWrapper>
       <CreditsTrigger
         $isActive={isActiveIndex}
-        className="type-small"
         onClick={() => setCreditsIsActive(!creditsIsActive)}
       >
         {creditsIsActive ? "Close" : "Credits"}
@@ -172,10 +166,12 @@ const MobileProjectCard = (props: Props) => {
         isMuted={isMuted}
         isPlaying={isPlaying}
         currentTime={currentTime}
-        videoLength={videoLength}
+        videoLength={media?.asset?.data?.duration}
         setIsMuted={setIsMuted}
         setIsPlaying={setIsPlaying}
-        handleSeek={handleSeek}
+        handleSeek={(time) => {
+          if (muxPlayerRef.current) muxPlayerRef.current.currentTime = time;
+        }}
       />
       <MobileCreditsModal
         credits={credits}

@@ -35,7 +35,7 @@ const MobileProjectTab = (props: Props) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
+    loop: false,
     axis: "y",
     dragFree: false,
     watchSlides: false,
@@ -57,11 +57,13 @@ const MobileProjectTab = (props: Props) => {
     }
 
     if (emblaApi) {
-      emblaApi.on("pointerUp", () =>
-        setActiveSlide(emblaApi.selectedScrollSnap())
-      );
+      emblaApi.on("pointerUp", () => {
+        setTimeout(() => {
+          setActiveSlide(emblaApi.selectedScrollSnap());
+        }, 200);
+      });
     }
-  }, [emblaApi]);
+  }, [emblaApi, activeProjectDataID]);
 
   return (
     <MobileProjectTabWrapper>
@@ -78,6 +80,7 @@ const MobileProjectTab = (props: Props) => {
                 media={project?.media}
                 credits={project?.credits}
                 isActiveIndex={activeSlide === i}
+                emblaApi={emblaApi}
               />
             </EmblaSlide>
           ))}
