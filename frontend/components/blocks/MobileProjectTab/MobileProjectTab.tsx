@@ -10,6 +10,7 @@ const MobileProjectTabWrapper = styled.div`
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
     display: block;
     background: var(--colour-black);
+    min-height: 100dvh;
   }
 `;
 
@@ -24,7 +25,7 @@ const EmblaSlide = styled.div`
 `;
 
 type Props = {
-  activeProjectDataID: string;
+  activeProjectDataID: string | undefined;
   projects: ProjectType[];
 };
 
@@ -40,13 +41,11 @@ const MobileProjectTab = (props: Props) => {
     watchSlides: false,
     watchDrag: true,
     align: "start",
-    skipSnaps: false,
+    skipSnaps: true,
     containScroll: false,
   });
 
   useEffect(() => {
-    console.log("activeProjectDataID", activeProjectDataID);
-
     if (activeProjectDataID) {
       const index = projects.findIndex(
         (project) => project.slug?.current === activeProjectDataID

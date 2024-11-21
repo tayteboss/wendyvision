@@ -4,6 +4,7 @@ import MuxPlayer from "@mux/mux-player-react/lazy";
 import VideoControls from "../VideoControls";
 import { useState, useRef, useEffect } from "react";
 import pxToRem from "../../../utils/pxToRem";
+import MobileCreditsModal from "../MobileCreditsModal";
 
 const MobileProjectCardWrapper = styled.div<{ $isActiveIndex: boolean }>`
   width: 100%;
@@ -39,7 +40,7 @@ const ContentWrapper = styled.div<{ $isActive: boolean }>`
   top: 0;
   left: 0;
   padding: ${pxToRem(16)};
-  z-index: 2;
+  z-index: 10;
   mix-blend-mode: difference;
   color: var(--colour-white);
   opacity: ${(props) => (props.$isActive ? "1" : "0")};
@@ -52,7 +53,7 @@ const CreditsTrigger = styled.button<{ $isActive: boolean }>`
   top: 0;
   right: 0;
   padding: ${pxToRem(16)};
-  z-index: 2;
+  z-index: 10;
   mix-blend-mode: difference;
   color: var(--colour-white);
   opacity: ${(props) => (props.$isActive ? "1" : "0")};
@@ -142,27 +143,31 @@ const MobileProjectCard = (props: Props) => {
             loading="viewport"
             style={{ aspectRatio: 16 / 9 }}
           />
-          <ContentWrapper $isActive={isActiveIndex} className="type-small">
-            {client || ""} <Spacer>/</Spacer>
-            {title || ""}
-            {services.length > 0 && (
-              <SuperScript className="type-small">
-                (
-                {services.map((service: string, i: number) => (
-                  <span key={`service-${i}`}>
-                    {service}
-                    {i < services.length - 1 && " —"}
-                  </span>
-                ))}
-                )
-              </SuperScript>
-            )}
-          </ContentWrapper>
-          <CreditsTrigger $isActive={isActiveIndex} className="type-small">
-            {creditsIsActive ? "Close" : "Credits"}
-          </CreditsTrigger>
         </MediaWrapper>
       )}
+      <ContentWrapper $isActive={isActiveIndex} className="type-small">
+        {client || ""} <Spacer>/</Spacer>
+        {title || ""}
+        {services.length > 0 && (
+          <SuperScript className="type-small">
+            (
+            {services.map((service: string, i: number) => (
+              <span key={`service-${i}`}>
+                {service}
+                {i < services.length - 1 && " —"}
+              </span>
+            ))}
+            )
+          </SuperScript>
+        )}
+      </ContentWrapper>
+      <CreditsTrigger
+        $isActive={isActiveIndex}
+        className="type-small"
+        onClick={() => setCreditsIsActive(!creditsIsActive)}
+      >
+        {creditsIsActive ? "Close" : "Credits"}
+      </CreditsTrigger>
       <VideoControls
         isMuted={isMuted}
         isPlaying={isPlaying}
@@ -171,6 +176,13 @@ const MobileProjectCard = (props: Props) => {
         setIsMuted={setIsMuted}
         setIsPlaying={setIsPlaying}
         handleSeek={handleSeek}
+      />
+      <MobileCreditsModal
+        credits={credits}
+        title={title}
+        client={client}
+        year={year}
+        isActive={creditsIsActive}
       />
     </MobileProjectCardWrapper>
   );

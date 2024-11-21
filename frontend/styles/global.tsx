@@ -192,7 +192,6 @@ export const GlobalStyles = createGlobalStyle`
 	.embla__slide {
 		flex: 0 0 auto;
 		min-width: 0;
-		margin-bottom: 2px
 	}
 
 	.performance {
