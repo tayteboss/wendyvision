@@ -111,6 +111,11 @@ const CreditItem = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  font-size: ${pxToRem(18)};
+  line-height: 1.2;
+  color: var(--colour-white);
+  text-align: center;
+
   * {
     font-size: ${pxToRem(18)};
     line-height: 1.2;
@@ -199,6 +204,24 @@ const CreditsModal = (props: Props) => {
           </LogoWrapper>
           {hasCredits && (
             <CreditsWrapper ref={wrapperRef} isTwoColumns={isTwoColumns}>
+              {activeProjectData?.title && (
+                <CreditItem>
+                  <TitleWrapper>{activeProjectData?.title}</TitleWrapper>
+                  <CreditType className="type-small">Title</CreditType>
+                </CreditItem>
+              )}
+              {activeProjectData?.client && (
+                <CreditItem>
+                  <TitleWrapper>{activeProjectData?.client}</TitleWrapper>
+                  <CreditType className="type-small">Client</CreditType>
+                </CreditItem>
+              )}
+              {activeProjectData?.year && (
+                <CreditItem>
+                  <TitleWrapper>{activeProjectData?.year}</TitleWrapper>
+                  <CreditType className="type-small">Year</CreditType>
+                </CreditItem>
+              )}
               {activeProjectData.credits.map((credit, i) => (
                 <CreditItem key={i}>
                   {credit?.title && (
