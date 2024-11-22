@@ -96,11 +96,11 @@ const MobileProjectCard = ({
 
   const playVideo = async () => {
     if (!muxPlayerRef.current) return;
+    muxPlayerRef.current.muted = true; // Ensure muted is set
     try {
       await muxPlayerRef.current.play();
     } catch (err) {
       console.warn("Autoplay failed, retrying muted:", err);
-      muxPlayerRef.current.muted = true;
       await muxPlayerRef.current.play();
     }
   };
@@ -117,8 +117,16 @@ const MobileProjectCard = ({
   };
 
   useEffect(() => {
-    handleVideoState();
-  }, [isActiveIndex]);
+    if (isActiveIndex && muxPlayerRef.current) {
+      playVideo();
+    }
+    if (isActiveIndex && muxPlayerRef.current) {
+      const timer = setTimeout(() => {
+        playVideo();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isActiveIndex, muxPlayerRef.current]);
 
   useEffect(() => {
     const [width, height] = aspectRatio.split(":").map(Number);
@@ -150,6 +158,7 @@ const MobileProjectCard = ({
             playbackId={media.asset.playbackId}
             loop
             muted={isMuted}
+            autoPlay={isActiveIndex}
             onCanPlay={handleVideoState}
             onLoadedData={handleVideoState}
           />
