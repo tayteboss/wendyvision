@@ -95,6 +95,7 @@ const MenuListWrapper = (props: Props) => {
           projects={projects}
           siteSettings={siteSettings}
           wrapperVariants={wrapperVariants}
+          tabActive={tabActive}
           setMenuTabActive={setMenuTabActive}
           setMenuIsActive={setMenuIsActive}
           setTabActive={setTabActive}

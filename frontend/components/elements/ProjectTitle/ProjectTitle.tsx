@@ -46,10 +46,12 @@ type Props = {
   activeProjectData: ProjectType | undefined;
   projects: ProjectType[];
   setActiveProjectId?: (id: string) => void;
+  setBackdropActive: (isActive: boolean) => void;
 };
 
 const ProjectTitle = (props: Props) => {
-  const { activeProjectData, projects, setActiveProjectId } = props;
+  const { activeProjectData, projects, setActiveProjectId, setBackdropActive } =
+    props;
 
   const [isHovered, setIsHovered] = useState(false);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -179,7 +181,11 @@ const ProjectTitle = (props: Props) => {
   }, [emblaApi]);
 
   return (
-    <Title variants={wrapperVariants}>
+    <Title
+      variants={wrapperVariants}
+      onMouseOver={() => setBackdropActive(true)}
+      onMouseOut={() => setBackdropActive(false)}
+    >
       Work <Spacer>/</Spacer>
       <EmblaCarousel className="embla" ref={emblaRef}>
         <EmblaContainer className="embla__container">

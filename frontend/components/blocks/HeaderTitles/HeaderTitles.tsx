@@ -25,6 +25,7 @@ type Props = {
   siteSettings: SiteSettingsType;
   activeProjectData: ProjectType | undefined;
   setActiveProjectId?: (id: string) => void;
+  setBackdropActive: (isActive: boolean) => void;
 };
 
 const HeaderTitles = (props: Props) => {
@@ -35,6 +36,7 @@ const HeaderTitles = (props: Props) => {
     activeProjectData,
     projects,
     setActiveProjectId,
+    setBackdropActive,
   } = props;
 
   return (
@@ -60,6 +62,7 @@ const HeaderTitles = (props: Props) => {
               activeProjectData={activeProjectData}
               projects={projects}
               setActiveProjectId={setActiveProjectId}
+              setBackdropActive={setBackdropActive}
             />
           )}
       </AnimatePresence>

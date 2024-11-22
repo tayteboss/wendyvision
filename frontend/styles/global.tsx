@@ -42,7 +42,9 @@ export const GlobalStyles = createGlobalStyle`
 	.hide-header {
 		.header {
 			opacity: 0;
+			cursor: none;
 		}
+
 		.project-tab {
 			cursor: none;
 		}

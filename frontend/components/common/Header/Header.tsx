@@ -6,6 +6,7 @@ import LogoElement from "../../elements/LogoElement";
 import HeaderTitles from "../../blocks/HeaderTitles";
 import MenuListWrapper from "../../blocks/MenuListWrapper";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
+import { useState } from "react";
 
 const HeaderWrapper = styled.header`
   position: fixed;
@@ -62,23 +63,22 @@ const MobileWrapper = styled.div`
   }
 `;
 
-const MobileBackDrop = styled.div<{ $isActive: boolean }>`
-  display: none;
+const BackDrop = styled.div<{ $isActive: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(25px);
+  z-index: 99;
+  pointer-events: none;
+  opacity: ${(props) => (props.$isActive ? 1 : 0)};
+
+  transition: all var(--transition-speed-default) var(--transition-ease);
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100dvh;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(4px);
-    z-index: 99;
-    pointer-events: none;
-    opacity: ${(props) => (props.$isActive ? 1 : 0)};
-
-    transition: all var(--transition-speed-default) var(--transition-ease);
+    background: rgba(0, 0, 0, 0.8);
   }
 `;
 
@@ -112,6 +112,8 @@ const Header = (props: Props) => {
     setActiveProjectId,
     setCreditsIsActive,
   } = props;
+
+  const [backdropActive, setBackdropActive] = useState(false);
 
   const { width } = useWindowDimensions();
 
@@ -174,6 +176,7 @@ const Header = (props: Props) => {
             activeProjectData={activeProjectData}
             projects={projects}
             setActiveProjectId={setActiveProjectId}
+            setBackdropActive={setBackdropActive}
           />
         </LHS>
         <RHS>
@@ -200,7 +203,7 @@ const Header = (props: Props) => {
           />
         </RHS>
       </HeaderWrapper>
-      <MobileBackDrop $isActive={menuIsActive} />
+      <BackDrop $isActive={menuIsActive || backdropActive} />
     </>
   );
 };

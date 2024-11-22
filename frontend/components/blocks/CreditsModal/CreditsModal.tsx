@@ -14,7 +14,7 @@ const CreditsModalWrapper = styled(motion.section)`
   min-height: 100vh;
   width: 100%;
   background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(25px);
   z-index: 500;
   display: flex;
   justify-content: center;

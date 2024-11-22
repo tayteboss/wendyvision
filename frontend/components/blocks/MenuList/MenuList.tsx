@@ -34,6 +34,7 @@ type Props = {
   projects: ProjectType[];
   siteSettings: SiteSettingsType;
   wrapperVariants: any;
+  tabActive: string;
   setMenuTabActive: (tab: string) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
@@ -47,6 +48,7 @@ const MenuList = (props: Props) => {
     projects,
     siteSettings,
     wrapperVariants,
+    tabActive,
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
@@ -203,6 +205,8 @@ const MenuList = (props: Props) => {
     };
   }, [emblaApi]);
 
+  console.log("tabActive", tabActive);
+
   return (
     <>
       {menuIsActive && (
@@ -214,6 +218,7 @@ const MenuList = (props: Props) => {
           exit="hidden"
         >
           <MenuListWrapper>
+            {/* GENERAL LINKS */}
             {menuTabActive !== "workList" && menuTabActive !== "contact" && (
               <EmblaCarousel className="embla" ref={emblaRef}>
                 <EmblaContainer className="embla__container">
@@ -224,7 +229,10 @@ const MenuList = (props: Props) => {
                         title={link.title}
                         id={link.id}
                         isHovered={isHovered}
-                        isActive={true}
+                        isActive={
+                          tabActive === link.id ||
+                          (link.id === "workList" && tabActive === "project")
+                        }
                         setIsHovered={setIsHovered}
                         setMenuIsActive={setMenuIsActive}
                         setMenuTabActive={setMenuTabActive}
@@ -236,6 +244,7 @@ const MenuList = (props: Props) => {
               </EmblaCarousel>
             )}
 
+            {/* PROJECT LINKS */}
             {menuTabActive === "workList" && (
               <EmblaCarousel className="embla" ref={emblaRef}>
                 <EmblaContainer className="embla__container">
@@ -262,6 +271,7 @@ const MenuList = (props: Props) => {
               </EmblaCarousel>
             )}
 
+            {/* CONTACT LINKS */}
             {menuTabActive === "contact" &&
               contactLinks.map((link, i) => (
                 <MenuLink
