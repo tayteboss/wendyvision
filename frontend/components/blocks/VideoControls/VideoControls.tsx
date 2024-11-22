@@ -152,7 +152,7 @@ const VideoControls = (props: Props) => {
       window.removeEventListener("mousemove", handleMouseActive);
       clearTimeout(timeout);
     };
-  }, [isActive]);
+  }, [isActive, width]);
 
   return (
     <AnimatePresence>
