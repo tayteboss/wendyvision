@@ -94,6 +94,7 @@ const MobileWrapper = styled.div`
     justify-content: space-between;
     min-height: 100vh;
     padding: ${pxToRem(16)} 0;
+    gap: ${pxToRem(80)};
   }
 `;
 

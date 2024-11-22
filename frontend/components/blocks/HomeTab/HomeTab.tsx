@@ -92,7 +92,7 @@ const HomeTab = (props: Props) => {
               loop={true}
               thumbnailTime={1}
               preload="auto"
-              muted
+              muted={true}
               autoPlay="muted"
               playsInline={true}
             />

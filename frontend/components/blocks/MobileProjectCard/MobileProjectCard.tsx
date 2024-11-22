@@ -99,10 +99,23 @@ const MobileProjectCard = ({
   const handleVideoState = () => {
     if (muxPlayerRef.current) {
       if (isActiveIndex) {
-        muxPlayerRef.current.play().catch((error) => {
-          console.error("Error playing video:", error);
+        muxPlayerRef.current.play().catch((err) => {
+          console.warn("Autoplay failed, retrying muted:", err);
+          if (muxPlayerRef.current) {
+            muxPlayerRef.current.muted = true; // Ensure muted is applied
+            muxPlayerRef.current.play();
+          }
         });
+
+        // Retry with a slight delay
+        const timer = setTimeout(() => {
+          if (muxPlayerRef.current) {
+            muxPlayerRef.current.play();
+          }
+        }, 1000);
+
         setIsPlaying(true);
+        return () => clearTimeout(timer);
       } else {
         muxPlayerRef.current.pause();
         setIsPlaying(false);
