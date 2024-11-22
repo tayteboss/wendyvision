@@ -71,6 +71,7 @@ const BackDrop = styled.div<{ $isActive: boolean }>`
   width: 100%;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 99;
   pointer-events: none;
   opacity: ${(props) => (props.$isActive ? 1 : 0)};
