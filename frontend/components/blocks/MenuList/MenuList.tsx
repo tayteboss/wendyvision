@@ -35,6 +35,7 @@ type Props = {
   siteSettings: SiteSettingsType;
   wrapperVariants: any;
   tabActive: string;
+  isMobile?: boolean;
   setMenuTabActive: (tab: string) => void;
   setMenuIsActive: (isActive: boolean) => void;
   setTabActive?: (tab: string) => void;
@@ -49,6 +50,7 @@ const MenuList = (props: Props) => {
     siteSettings,
     wrapperVariants,
     tabActive,
+    isMobile,
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
@@ -106,8 +108,21 @@ const MenuList = (props: Props) => {
 
   useEffect(() => {
     if (!emblaApi) return;
-    emblaApi.scrollTo(0);
-  }, [menuIsActive]);
+
+    if (menuTabActive === "workList") {
+      emblaApi.scrollTo(0);
+    } else {
+      const activeLinkIndex = generalLinks.findIndex(
+        (link) =>
+          link.id === menuTabActive ||
+          (link.id === "workList" && tabActive === "project")
+      );
+
+      if (activeLinkIndex !== -1) {
+        emblaApi.scrollTo(activeLinkIndex);
+      }
+    }
+  }, [menuIsActive, emblaApi]);
 
   const updateActiveSlide = useCallback(() => {
     if (!emblaApi || !rootNodeRef.current) return;
@@ -205,8 +220,6 @@ const MenuList = (props: Props) => {
     };
   }, [emblaApi]);
 
-  console.log("tabActive", tabActive);
-
   return (
     <>
       {menuIsActive && (
@@ -233,6 +246,8 @@ const MenuList = (props: Props) => {
                           tabActive === link.id ||
                           (link.id === "workList" && tabActive === "project")
                         }
+                        isMobile={isMobile}
+                        projects={projects}
                         setIsHovered={setIsHovered}
                         setMenuIsActive={setMenuIsActive}
                         setMenuTabActive={setMenuTabActive}
@@ -247,7 +262,7 @@ const MenuList = (props: Props) => {
             {/* PROJECT LINKS */}
             {menuTabActive === "workList" && (
               <EmblaCarousel className="embla" ref={emblaRef}>
-                <EmblaContainer className="embla__container">
+                <EmblaContainer className="embla__container project-links-embla-container">
                   {projects.map((link, i) => (
                     <EmblaSlide key={i} className="embla__slide">
                       <MenuLink

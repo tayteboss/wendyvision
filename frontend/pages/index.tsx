@@ -110,6 +110,9 @@ const Page = (props: Props) => {
           <MobileProjectTab
             activeProjectDataID={activeProjectData?.slug?.current}
             projects={projects}
+            mobileCreditsIsActive={creditsIsActive}
+            setMobileCreditsIsActive={setCreditsIsActive}
+            setActiveProjectId={setActiveProjectId}
             key="mobile-project-tab"
           />
         )}

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import pxToRem from "../../../utils/pxToRem";
 import Link from "next/link";
+import { ProjectType } from "../../../shared/types/types";
 
 const MenuLinkWrapper = styled(motion.button)<{ $isHovered: boolean }>`
   text-align: left;
@@ -38,7 +39,7 @@ const Inner = styled.span<{ $isHovered: boolean; $isActive: boolean }>`
 const Title = styled.span`
   white-space: nowrap;
 
-  @media ${(props) => props.theme.mediaBreakpoints.mobile} {
+  @media ${(props) => props.theme.mediaBreakpoints.tabletLandscape} {
     white-space: unset;
   }
 `;
@@ -52,6 +53,7 @@ const SuperScript = styled.sup`
   line-height: ${pxToRem(1)};
   letter-spacing: 0.02em;
   padding-left: ${pxToRem(4)};
+  white-space: nowrap !important;
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
     display: none;
@@ -90,6 +92,8 @@ type Props = {
   url?: string;
   isContactType?: boolean;
   isInternalProjectType?: boolean;
+  isMobile?: boolean;
+  projects?: ProjectType[];
   setIsHovered: (isHovered: boolean) => void;
   setMenuIsActive?: (isActive: boolean) => void;
   setMenuTabActive?: (tab: string) => void;
@@ -109,6 +113,8 @@ const MenuLink = (props: Props) => {
     url,
     isContactType,
     isInternalProjectType,
+    isMobile,
+    projects,
     setIsHovered,
     setMenuIsActive,
     setMenuTabActive,
@@ -134,8 +140,17 @@ const MenuLink = (props: Props) => {
       setIsHovered(false);
     }
     if (id === "workList") {
-      setMenuTabActive && setMenuTabActive(id);
-      setIsHovered(false);
+      if (isMobile) {
+        setMenuTabActive && setMenuTabActive("home");
+        setTabActive && setTabActive("project");
+        setMenuIsActive && setMenuIsActive(false);
+        setActiveProjectId &&
+          setActiveProjectId(projects?.[0]?.slug?.current || "");
+        setIsHovered(false);
+      } else {
+        setMenuTabActive && setMenuTabActive(id);
+        setIsHovered(false);
+      }
     }
     if (isProjectType) {
       setMenuTabActive && setMenuTabActive("project");
@@ -164,9 +179,9 @@ const MenuLink = (props: Props) => {
     >
       <Inner $isHovered={isHovered} $isActive={isActive}>
         {isProjectType && (
-          <Title>
+          <Title className="menu-link-title">
             {client || ""} <Spacer>/</Spacer>
-            <Title>{title || ""}</Title>
+            <Title className="menu-link-title">{title || ""}</Title>
             {hasServices && (
               <SuperScript>
                 (
@@ -183,7 +198,7 @@ const MenuLink = (props: Props) => {
         )}
         {isContactType && url && (
           <Link href={url} target="_blank">
-            <Title>{title}</Title>
+            <Title className="menu-link-title">{title}</Title>
           </Link>
         )}
         {!isProjectType && !isContactType && title}

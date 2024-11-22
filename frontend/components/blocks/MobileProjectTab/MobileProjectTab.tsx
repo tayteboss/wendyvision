@@ -27,10 +27,19 @@ const EmblaSlide = styled.div`
 type Props = {
   activeProjectDataID: string | undefined;
   projects: ProjectType[];
+  mobileCreditsIsActive: boolean;
+  setMobileCreditsIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveProjectId: (id: string) => void;
 };
 
 const MobileProjectTab = (props: Props) => {
-  const { activeProjectDataID, projects } = props;
+  const {
+    activeProjectDataID,
+    projects,
+    mobileCreditsIsActive,
+    setMobileCreditsIsActive,
+    setActiveProjectId,
+  } = props;
 
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -60,6 +69,9 @@ const MobileProjectTab = (props: Props) => {
       emblaApi.on("pointerUp", () => {
         setTimeout(() => {
           setActiveSlide(emblaApi.selectedScrollSnap());
+          setActiveProjectId(
+            projects[emblaApi.selectedScrollSnap()].slug?.current
+          );
         }, 300);
       });
     }
@@ -76,10 +88,10 @@ const MobileProjectTab = (props: Props) => {
                 id={project?.slug?.current}
                 client={project?.client}
                 services={project?.services}
-                year={project?.year}
                 media={project?.media}
-                credits={project?.credits}
                 isActiveIndex={activeSlide === i}
+                mobileCreditsIsActive={mobileCreditsIsActive}
+                setMobileCreditsIsActive={setMobileCreditsIsActive}
               />
             </EmblaSlide>
           ))}

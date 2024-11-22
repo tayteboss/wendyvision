@@ -13,7 +13,7 @@ const CreditsModalWrapper = styled(motion.section)`
   left: 0;
   min-height: 100vh;
   width: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(25px);
   z-index: 500;
   display: flex;
@@ -37,6 +37,10 @@ const LogoWrapper = styled.div`
       display: none;
     }
   }
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    display: none;
+  }
 `;
 
 const CloseTrigger = styled.button`
@@ -47,6 +51,16 @@ const CloseTrigger = styled.button`
   z-index: 1;
   color: var(--colour-white);
   text-align: right;
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    top: 0;
+    right: 0;
+    font-size: ${pxToRem(12)};
+    line-height: ${pxToRem(12)};
+    letter-spacing: -0.05em;
+    padding: ${pxToRem(8)};
+    transform: translateY(0);
+  }
 `;
 
 const CreditsWrapper = styled.div<{ isTwoColumns: boolean }>`
@@ -58,15 +72,34 @@ const CreditsWrapper = styled.div<{ isTwoColumns: boolean }>`
   justify-content: ${({ isTwoColumns }) =>
     isTwoColumns ? "center" : "flex-start"};
   gap: ${pxToRem(24)};
-  max-height: 100vh; /* Ensure it doesn't exceed viewport height */
-  overflow-y: auto; /* Scroll if content exceeds viewport height */
+  max-height: 100vh;
+  overflow-y: auto;
   max-width: 70vw;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
 
   & > div {
     flex: ${({ isTwoColumns }) =>
       isTwoColumns ? "1 1 calc(50% - 16px)" : "unset"};
     max-width: ${({ isTwoColumns }) =>
       isTwoColumns ? "calc(50% - 16px)" : "none"};
+  }
+
+  @media ${(props) => props.theme.mediaBreakpoints.tabletPortrait} {
+    height: 100vh;
+    flex-direction: column;
+    justify-content: safe center;
+    padding: ${pxToRem(40)} 0;
+
+    & > div {
+      flex: unset;
+      max-width: none;
+    }
   }
 `;
 

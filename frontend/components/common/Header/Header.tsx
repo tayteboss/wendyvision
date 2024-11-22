@@ -167,6 +167,7 @@ const Header = (props: Props) => {
               setMenuIsActive={setMenuIsActive}
               setTabActive={setTabActive}
               setActiveProjectId={setActiveProjectId}
+              isMobile={width < 1125}
             />
           </MobileWrapper>
           <HeaderTitles

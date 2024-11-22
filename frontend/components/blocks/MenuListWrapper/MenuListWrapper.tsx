@@ -28,6 +28,7 @@ type Props = {
   projects: ProjectType[];
   siteSettings: SiteSettingsType;
   wrapperVariants: any;
+  isMobile?: boolean;
   setMenuIsActive: (value: boolean) => void;
   setMenuTabActive: (tab: string) => void;
   setTabActive?: (tab: string) => void;
@@ -43,6 +44,7 @@ const MenuListWrapper = (props: Props) => {
     projects,
     siteSettings,
     wrapperVariants,
+    isMobile,
     setMenuTabActive,
     setMenuIsActive,
     setTabActive,
@@ -96,6 +98,7 @@ const MenuListWrapper = (props: Props) => {
           siteSettings={siteSettings}
           wrapperVariants={wrapperVariants}
           tabActive={tabActive}
+          isMobile={isMobile}
           setMenuTabActive={setMenuTabActive}
           setMenuIsActive={setMenuIsActive}
           setTabActive={setTabActive}

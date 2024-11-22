@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import throttle from "lodash.throttle";
 import useViewportWidth from "../../../hooks/useViewportWidth";
 import ControlsPanel from "../ControlsPanel";
+import useWindowDimensions from "../../../hooks/useWindowDimensions";
 
 const VideoControlsWrapper = styled(motion.div)`
   position: absolute;
@@ -82,6 +83,7 @@ const VideoControls = (props: Props) => {
   const [isMobile, setIsMobile] = useState(false);
 
   const viewportWidth = useViewportWidth();
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     if (viewportWidth === "tabletPortrait" || viewportWidth === "mobile") {
@@ -113,6 +115,11 @@ const VideoControls = (props: Props) => {
     };
 
     const handleMouseInactive = () => {
+      if (width < 1125) {
+        setIsActive(true);
+        return;
+      }
+
       timeout = setTimeout(
         () => {
           setIsActive(false);
@@ -126,6 +133,11 @@ const VideoControls = (props: Props) => {
     handleMenuActivity(isActive);
 
     const handleMouseActive = () => {
+      if (width < 1125) {
+        setIsActive(true);
+        return;
+      }
+
       clearTimeout(timeout);
       setIsActive(true);
 

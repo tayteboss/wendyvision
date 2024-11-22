@@ -36,7 +36,7 @@ const ContentWrapper = styled.div<{ $isActive: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
-  padding: ${pxToRem(16)} ${pxToRem(80)} ${pxToRem(16)} ${pxToRem(16)};
+  padding: ${pxToRem(8)} ${pxToRem(80)} ${pxToRem(8)} ${pxToRem(8)};
   z-index: 10;
   mix-blend-mode: difference;
   color: var(--colour-white);
@@ -52,7 +52,7 @@ const CreditsTrigger = styled.button<{ $isActive: boolean }>`
   position: absolute;
   top: 0;
   right: 0;
-  padding: ${pxToRem(16)};
+  padding: ${pxToRem(8)};
   z-index: 10;
   mix-blend-mode: difference;
   color: var(--colour-white);
@@ -70,25 +70,25 @@ type Props = {
   id: ProjectType["slug"]["current"];
   client: ProjectType["client"];
   services: ProjectType["services"];
-  year: ProjectType["year"];
   media: ProjectType["media"];
-  credits: ProjectType["credits"];
   isActiveIndex: boolean;
+  mobileCreditsIsActive: boolean;
+  setMobileCreditsIsActive: (isActive: boolean) => void;
 };
 
 const MobileProjectCard = ({
   title,
   client,
   services,
-  year,
   media,
-  credits,
   isActiveIndex,
+  mobileCreditsIsActive,
+  setMobileCreditsIsActive,
 }: Props) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [creditsIsActive, setCreditsIsActive] = useState(false);
+
   const muxPlayerRef = useRef<HTMLVideoElement | null>(null);
 
   const handleVideoState = () => {
@@ -150,7 +150,7 @@ const MobileProjectCard = ({
             autoPlay={false}
             loop
             muted={isMuted}
-            style={{ aspectRatio: "16 / 9" }}
+            style={{ aspectRatio: "8 / 9" }}
             onCanPlay={() => handleVideoState()}
             onLoadedData={() => handleVideoState()}
           />
@@ -162,9 +162,9 @@ const MobileProjectCard = ({
       </ContentWrapper>
       <CreditsTrigger
         $isActive={isActiveIndex}
-        onClick={() => setCreditsIsActive(!creditsIsActive)}
+        onClick={() => setMobileCreditsIsActive(!mobileCreditsIsActive)}
       >
-        {creditsIsActive ? "Close" : "Credits"}
+        {mobileCreditsIsActive ? "Close" : "Credits"}
       </CreditsTrigger>
       <VideoControls
         isMuted={isMuted}
@@ -176,13 +176,6 @@ const MobileProjectCard = ({
         handleSeek={(time) => {
           if (muxPlayerRef.current) muxPlayerRef.current.currentTime = time;
         }}
-      />
-      <MobileCreditsModal
-        credits={credits}
-        title={title}
-        client={client}
-        year={year}
-        isActive={creditsIsActive}
       />
     </MobileProjectCardWrapper>
   );

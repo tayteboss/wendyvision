@@ -196,6 +196,18 @@ export const GlobalStyles = createGlobalStyle`
 		min-width: 0;
 	}
 
+	.project-links-embla-container {
+		padding-right: ${pxToRem(32)};
+
+		@media ${theme.mediaBreakpoints.tabletMedium} {
+			padding-right: 0;
+		}
+
+		.menu-link-title {
+			white-space: unset;
+		}
+	}
+
 	.performance {
 		-webkit-transform: translateZ(0);
 		backface-visibility: hidden;
