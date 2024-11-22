@@ -46,7 +46,6 @@ const ContentWrapper = styled.div<{ $isActive: boolean }>`
   font-size: ${pxToRem(12)};
   line-height: ${pxToRem(12)};
   letter-spacing: -0.05em;
-
   transition: all var(--transition-speed-default) var(--transition-ease);
 `;
 
@@ -63,7 +62,6 @@ const CreditsTrigger = styled.button<{ $isActive: boolean }>`
   font-size: ${pxToRem(12)};
   line-height: ${pxToRem(12)};
   letter-spacing: -0.05em;
-
   transition: all var(--transition-speed-default) var(--transition-ease);
 `;
 
@@ -96,67 +94,31 @@ const MobileProjectCard = ({
 
   const muxPlayerRef = useRef<HTMLVideoElement | null>(null);
 
+  const playVideo = async () => {
+    if (!muxPlayerRef.current) return;
+    try {
+      await muxPlayerRef.current.play();
+    } catch (err) {
+      console.warn("Autoplay failed, retrying muted:", err);
+      muxPlayerRef.current.muted = true;
+      await muxPlayerRef.current.play();
+    }
+  };
+
   const handleVideoState = () => {
-    if (muxPlayerRef.current) {
-      if (isActiveIndex) {
-        muxPlayerRef.current.play().catch((err) => {
-          console.warn("Autoplay failed, retrying muted:", err);
-          if (muxPlayerRef.current) {
-            muxPlayerRef.current.muted = true; // Ensure muted is applied
-            muxPlayerRef.current.play();
-          }
-        });
-
-        // Retry with a slight delay
-        const timer = setTimeout(() => {
-          if (muxPlayerRef.current) {
-            muxPlayerRef.current.play();
-          }
-        }, 1000);
-
-        setIsPlaying(true);
-        return () => clearTimeout(timer);
-      } else {
-        muxPlayerRef.current.pause();
-        setIsPlaying(false);
-      }
+    if (!muxPlayerRef.current) return;
+    if (isActiveIndex) {
+      playVideo();
+      setIsPlaying(true);
+    } else {
+      muxPlayerRef.current.pause();
+      setIsPlaying(false);
     }
   };
 
   useEffect(() => {
     handleVideoState();
-  }, [isActiveIndex, muxPlayerRef]);
-
-  useEffect(() => {
-    if (muxPlayerRef.current) {
-      // Ensure video state is updated correctly on initial load and subsequent changes
-      handleVideoState();
-    }
-  }, [isActiveIndex, muxPlayerRef]);
-
-  useEffect(() => {
-    if (isActiveIndex && muxPlayerRef.current) {
-      // Play the video on the initial load if it's the active index
-      muxPlayerRef.current.play().catch((err) => {
-        console.warn("Autoplay failed, retrying muted:", err);
-        if (muxPlayerRef.current) {
-          muxPlayerRef.current.muted = true; // Ensure muted is applied
-          muxPlayerRef.current.play();
-        }
-      });
-
-      // Retry with a slight delay
-      const timer = setTimeout(() => {
-        if (muxPlayerRef.current) {
-          muxPlayerRef.current.play();
-        }
-      }, 1000);
-
-      setIsPlaying(true);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isActiveIndex, muxPlayerRef]); // Run only once on mount
+  }, [isActiveIndex]);
 
   useEffect(() => {
     const [width, height] = aspectRatio.split(":").map(Number);
@@ -178,7 +140,7 @@ const MobileProjectCard = ({
     <MobileProjectCardWrapper
       $isActiveIndex={isActiveIndex}
       $aspectRatioPercentage={aspectRatioPercentage}
-      onClick={() => handleVideoState()}
+      onClick={handleVideoState}
     >
       {media.asset?.playbackId && (
         <MediaWrapper>
@@ -186,11 +148,10 @@ const MobileProjectCard = ({
             ref={muxPlayerRef}
             streamType="on-demand"
             playbackId={media.asset.playbackId}
-            // autoPlay={false}
             loop
             muted={isMuted}
-            onCanPlay={() => handleVideoState()}
-            onLoadedData={() => handleVideoState()}
+            onCanPlay={handleVideoState}
+            onLoadedData={handleVideoState}
           />
         </MediaWrapper>
       )}
