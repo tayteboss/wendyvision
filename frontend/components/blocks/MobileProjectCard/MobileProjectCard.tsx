@@ -137,10 +137,24 @@ const MobileProjectCard = ({
   useEffect(() => {
     if (isActiveIndex && muxPlayerRef.current) {
       // Play the video on the initial load if it's the active index
-      muxPlayerRef.current.play().catch((error) => {
-        console.error("Error playing video on initial load:", error);
+      muxPlayerRef.current.play().catch((err) => {
+        console.warn("Autoplay failed, retrying muted:", err);
+        if (muxPlayerRef.current) {
+          muxPlayerRef.current.muted = true; // Ensure muted is applied
+          muxPlayerRef.current.play();
+        }
       });
+
+      // Retry with a slight delay
+      const timer = setTimeout(() => {
+        if (muxPlayerRef.current) {
+          muxPlayerRef.current.play();
+        }
+      }, 1000);
+
       setIsPlaying(true);
+
+      return () => clearTimeout(timer);
     }
   }, [muxPlayerRef]); // Run only once on mount
 
@@ -172,10 +186,9 @@ const MobileProjectCard = ({
             ref={muxPlayerRef}
             streamType="on-demand"
             playbackId={media.asset.playbackId}
-            autoPlay={false}
+            // autoPlay={false}
             loop
             muted={isMuted}
-            style={{ aspectRatio: "8 / 9" }}
             onCanPlay={() => handleVideoState()}
             onLoadedData={() => handleVideoState()}
           />
