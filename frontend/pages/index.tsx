@@ -13,7 +13,7 @@ import {
   projectsQueryString,
   siteSettingsQueryString,
 } from "../lib/sanityQueries";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "../components/common/Header";
 import InformationTab from "../components/blocks/InformationTab";
 import DesktopProjectTab from "../components/blocks/DesktopProjectTab";
@@ -21,7 +21,13 @@ import CreditsModal from "../components/blocks/CreditsModal";
 import MobileProjectTab from "../components/blocks/MobileProjectTab";
 import HomeTab from "../components/blocks/HomeTab";
 
-const PageWrapper = styled(motion.div)``;
+const PageWrapper = styled(motion.div)<{ $showHomeTabInner: boolean }>`
+  background: var(--colour-black);
+
+  .home-tab-inner {
+    opacity: ${(props) => (props.$showHomeTabInner ? 1 : 0)};
+  }
+`;
 
 type Props = {
   projects: ProjectType[];
@@ -42,6 +48,22 @@ const Page = (props: Props) => {
   const [activeProjectData, setActiveProjectData] = useState<
     ProjectType | undefined
   >(undefined);
+  const [canPlay, setCanPlay] = useState(false);
+
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      const timer = setTimeout(() => {
+        setCanPlay(true);
+        isFirstRender.current = false;
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setCanPlay(true);
+    }
+  }, [tabActive]);
 
   useEffect(() => {
     if (activeProjectId) {
@@ -63,6 +85,7 @@ const Page = (props: Props) => {
       initial="hidden"
       animate="visible"
       exit="hidden"
+      $showHomeTabInner={canPlay}
     >
       <NextSeo
         title={siteSettings?.seoTitle || ""}
@@ -87,7 +110,7 @@ const Page = (props: Props) => {
         activeProjectData={activeProjectData}
         setCreditsIsActive={setCreditsIsActive}
       />
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="sync">
         <HomeTab
           siteSettings={siteSettings}
           key="home-tab"

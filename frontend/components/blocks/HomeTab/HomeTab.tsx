@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { SiteSettingsType } from "../../../shared/types/types";
 import { motion } from "framer-motion";
 import MuxPlayer from "@mux/mux-player-react";
-import { useEffect, useState, useRef } from "react";
 
 const HomeTabWrapper = styled(motion.section)`
   position: fixed;
@@ -18,8 +17,7 @@ const HomeTabWrapper = styled(motion.section)`
   }
 `;
 
-const Inner = styled.div<{ $isActive: boolean }>`
-  opacity: ${(props) => (props.$isActive ? 1 : 0)};
+const Inner = styled.div`
   height: 100%;
   width: 100%;
 
@@ -51,22 +49,6 @@ type Props = {
 const HomeTab = (props: Props) => {
   const { siteSettings, isActive } = props;
 
-  const [canPlay, setCanPlay] = useState(false);
-  const isFirstRender = useRef(true);
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      const timer = setTimeout(() => {
-        setCanPlay(true);
-        isFirstRender.current = false; // Mark as initialized
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    } else {
-      setCanPlay(true); // No delay for subsequent mounts
-    }
-  }, []);
-
   return (
     <>
       {isActive && (
@@ -76,7 +58,7 @@ const HomeTab = (props: Props) => {
           animate="visible"
           exit="hidden"
         >
-          <Inner $isActive={canPlay}>
+          <Inner className="home-tab-inner">
             <MuxPlayer
               streamType="on-demand"
               playbackId={siteSettings?.showreel?.asset.playbackId}
