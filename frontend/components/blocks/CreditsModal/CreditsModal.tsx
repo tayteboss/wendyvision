@@ -164,8 +164,10 @@ type Props = {
 
 const CreditsModal = (props: Props) => {
   const { creditsIsActive, setCreditsIsActive, activeProjectData } = props;
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
   const [isTwoColumns, setIsTwoColumns] = useState(false);
+
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const checkOverflow = () => {
@@ -185,6 +187,17 @@ const CreditsModal = (props: Props) => {
     window.addEventListener("resize", checkOverflow);
     return () => window.removeEventListener("resize", checkOverflow);
   }, [activeProjectData]);
+
+  useEffect(() => {
+    const html = document.querySelector("html");
+    if (html) {
+      if (creditsIsActive) {
+        html.classList.add("no-scroll");
+      } else {
+        html.classList.remove("no-scroll");
+      }
+    }
+  }, [creditsIsActive]);
 
   const hasCredits =
     activeProjectData?.credits !== undefined &&
