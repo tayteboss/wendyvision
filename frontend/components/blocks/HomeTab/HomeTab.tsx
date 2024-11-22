@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { SiteSettingsType } from "../../../shared/types/types";
 import { motion } from "framer-motion";
 import MuxPlayer from "@mux/mux-player-react";
+import { useEffect, useRef } from "react";
 
 const HomeTabWrapper = styled(motion.section)`
   position: fixed;
@@ -49,6 +50,14 @@ type Props = {
 const HomeTab = (props: Props) => {
   const { siteSettings, isActive } = props;
 
+  const muxRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (muxRef?.current) {
+      muxRef.current.play();
+    }
+  }, [muxRef]);
+
   return (
     <>
       {isActive && (
@@ -60,6 +69,7 @@ const HomeTab = (props: Props) => {
         >
           <Inner className="home-tab-inner">
             <MuxPlayer
+              ref={muxRef}
               streamType="on-demand"
               playbackId={siteSettings?.showreel?.asset.playbackId}
               loop={true}
