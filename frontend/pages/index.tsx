@@ -115,6 +115,7 @@ const Page = (props: Props) => {
           siteSettings={siteSettings}
           key="home-tab"
           isActive={tabActive === "home"}
+          canPlay={canPlay}
         />
         {tabActive === "information" && (
           <InformationTab

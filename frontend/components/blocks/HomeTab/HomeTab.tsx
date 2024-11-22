@@ -45,18 +45,25 @@ const wrapperVariants = {
 type Props = {
   siteSettings: SiteSettingsType;
   isActive: boolean;
+  canPlay: boolean;
 };
 
 const HomeTab = (props: Props) => {
-  const { siteSettings, isActive } = props;
+  const { siteSettings, isActive, canPlay } = props;
 
   const muxRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (muxRef?.current) {
       muxRef.current.play();
+
+      const timer = setTimeout(() => {
+        muxRef.current.play();
+      }, 500);
+
+      return () => clearTimeout(timer);
     }
-  }, [muxRef]);
+  }, [muxRef, isActive, canPlay]);
 
   return (
     <>
