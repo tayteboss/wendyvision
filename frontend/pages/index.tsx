@@ -79,6 +79,8 @@ const Page = (props: Props) => {
     setBlinkCount(blinkCount + 1);
   }, [menuTabActive]);
 
+  console.log("projects", projects);
+
   return (
     <PageWrapper
       variants={pageTransitionVariants}

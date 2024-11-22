@@ -4,11 +4,13 @@ import { ProjectType } from "../../../shared/types/types";
 import MuxPlayer from "@mux/mux-player-react/lazy";
 import pxToRem from "../../../utils/pxToRem";
 import VideoControls from "../VideoControls";
-import MobileCreditsModal from "../MobileCreditsModal";
 
-const MobileProjectCardWrapper = styled.div<{ $isActiveIndex: boolean }>`
+const MobileProjectCardWrapper = styled.div<{
+  $isActiveIndex: boolean;
+  $aspectRatioPercentage: string;
+}>`
   width: 100%;
-  padding-top: 56.25%;
+  padding-top: ${(props) => props.$aspectRatioPercentage};
   position: relative;
   filter: brightness(${(props) => (props.$isActiveIndex ? "1" : "0.15")});
   transition: all var(--transition-speed-slow) var(--transition-ease);
@@ -71,6 +73,7 @@ type Props = {
   client: ProjectType["client"];
   services: ProjectType["services"];
   media: ProjectType["media"];
+  aspectRatio: ProjectType["media"]["asset"]["data"]["aspect_ratio"];
   isActiveIndex: boolean;
   mobileCreditsIsActive: boolean;
   setMobileCreditsIsActive: (isActive: boolean) => void;
@@ -83,11 +86,13 @@ const MobileProjectCard = ({
   media,
   isActiveIndex,
   mobileCreditsIsActive,
+  aspectRatio,
   setMobileCreditsIsActive,
 }: Props) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [aspectRatioPercentage, setAspectRatioPercentage] = useState("56.25%");
 
   const muxPlayerRef = useRef<HTMLVideoElement | null>(null);
 
@@ -127,6 +132,12 @@ const MobileProjectCard = ({
   }, [muxPlayerRef]); // Run only once on mount
 
   useEffect(() => {
+    const [width, height] = aspectRatio.split(":").map(Number);
+    const percentage = (height / width) * 100;
+    setAspectRatioPercentage(`${percentage}%`);
+  }, [aspectRatio]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       if (muxPlayerRef.current) {
         setCurrentTime(muxPlayerRef.current.currentTime || 0);
@@ -139,6 +150,7 @@ const MobileProjectCard = ({
   return (
     <MobileProjectCardWrapper
       $isActiveIndex={isActiveIndex}
+      $aspectRatioPercentage={aspectRatioPercentage}
       onClick={() => handleVideoState()}
     >
       {media.asset?.playbackId && (

@@ -89,6 +89,7 @@ const MobileProjectTab = (props: Props) => {
                 client={project?.client}
                 services={project?.services}
                 media={project?.media}
+                aspectRatio={project?.media?.asset?.data?.aspect_ratio}
                 isActiveIndex={activeSlide === i}
                 mobileCreditsIsActive={mobileCreditsIsActive}
                 setMobileCreditsIsActive={setMobileCreditsIsActive}

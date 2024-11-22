@@ -78,6 +78,7 @@ export const projectsQueryString = `
 			asset-> {
 				playbackId,
 				data {
+					aspect_ratio,
 					duration
 				}
 			},

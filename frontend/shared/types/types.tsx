@@ -73,6 +73,7 @@ export type ProjectType = {
       playbackId: string;
       data: {
         duration: number;
+        aspect_ratio: string;
       };
     };
   };
