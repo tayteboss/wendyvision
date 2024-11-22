@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   useBlink: number;
@@ -8,18 +8,25 @@ const Eye = (props: Props) => {
   const { useBlink } = props;
   const [blink, setBlink] = useState(false);
 
-  useEffect(() => {
-    if (useBlink > 0) {
-      const blinkIntervals = [100, 300, 500, 700, 900];
-      const blinkStates = [false, true, false, true, false];
-      const timeouts: NodeJS.Timeout[] = [];
+  const isFirstRender = useRef(true);
 
+  useEffect(() => {
+    const blinkIntervals = isFirstRender.current
+      ? [100, 300, 500, 700, 900, 1100, 1300, 1500, 1700, 1900, 2100] // Additional blinks for the first render
+      : [100, 300, 500, 700, 900]; // Regular blinks for subsequent renders
+
+    const blinkStates = blinkIntervals.map((_, index) => index % 2 !== 0); // Alternate between false and true
+    const timeouts: NodeJS.Timeout[] = [];
+
+    if (useBlink > 0) {
       blinkIntervals.forEach((interval, index) => {
         timeouts.push(setTimeout(() => setBlink(blinkStates[index]), interval));
       });
 
-      return () => timeouts.forEach(clearTimeout);
+      isFirstRender.current = false; // Mark as initialized
     }
+
+    return () => timeouts.forEach(clearTimeout);
   }, [useBlink]);
 
   return (

@@ -19,6 +19,7 @@ import InformationTab from "../components/blocks/InformationTab";
 import DesktopProjectTab from "../components/blocks/DesktopProjectTab";
 import CreditsModal from "../components/blocks/CreditsModal";
 import MobileProjectTab from "../components/blocks/MobileProjectTab";
+import HomeTab from "../components/blocks/HomeTab";
 
 const PageWrapper = styled(motion.div)``;
 
@@ -87,6 +88,11 @@ const Page = (props: Props) => {
         setCreditsIsActive={setCreditsIsActive}
       />
       <AnimatePresence mode="wait">
+        <HomeTab
+          siteSettings={siteSettings}
+          key="home-tab"
+          isActive={tabActive === "home"}
+        />
         {tabActive === "information" && (
           <InformationTab
             siteSettings={siteSettings}
