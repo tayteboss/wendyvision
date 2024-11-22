@@ -54,11 +54,21 @@ const HomeTab = (props: Props) => {
   const muxRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (muxRef?.current) {
-      muxRef.current.play();
+    if (isActive && canPlay && muxRef.current) {
+      // Attempt to autoplay
+      muxRef.current.play().catch((err) => {
+        console.warn("Autoplay failed, retrying muted:", err);
+        if (muxRef.current) {
+          muxRef.current.muted = true; // Ensure muted is applied
+          muxRef.current.play();
+        }
+      });
 
+      // Retry with a slight delay
       const timer = setTimeout(() => {
-        muxRef.current.play();
+        if (muxRef.current) {
+          muxRef.current.play();
+        }
       }, 500);
 
       return () => clearTimeout(timer);
