@@ -156,7 +156,7 @@ const MobileProjectCard = ({
 
       return () => clearTimeout(timer);
     }
-  }, [muxPlayerRef]); // Run only once on mount
+  }, [isActiveIndex, muxPlayerRef]); // Run only once on mount
 
   useEffect(() => {
     const [width, height] = aspectRatio.split(":").map(Number);
