@@ -119,12 +119,18 @@ const MobileProjectCard = ({
   useEffect(() => {
     if (isActiveIndex && muxPlayerRef.current) {
       playVideo();
+    } else {
+      muxPlayerRef.current?.pause();
+      setIsPlaying(false);
     }
     if (isActiveIndex && muxPlayerRef.current) {
       const timer = setTimeout(() => {
         playVideo();
       }, 500);
       return () => clearTimeout(timer);
+    } else {
+      muxPlayerRef.current?.pause();
+      setIsPlaying(false);
     }
   }, [isActiveIndex, muxPlayerRef.current]);
 
