@@ -13,7 +13,6 @@ const VideoControlsWrapper = styled(motion.div)`
   width: 100%;
   z-index: 4;
   color: var(--colour-white);
-  mix-blend-mode: difference;
 `;
 
 const Inner = styled(motion.div)`

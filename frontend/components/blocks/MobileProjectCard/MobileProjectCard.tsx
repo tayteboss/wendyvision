@@ -40,7 +40,6 @@ const ContentWrapper = styled.div<{ $isActive: boolean }>`
   left: 0;
   padding: ${pxToRem(8)} ${pxToRem(80)} ${pxToRem(8)} ${pxToRem(8)};
   z-index: 10;
-  mix-blend-mode: difference;
   color: var(--colour-white);
   opacity: ${(props) => (props.$isActive ? "1" : "0")};
   font-size: ${pxToRem(12)};
@@ -55,7 +54,6 @@ const CreditsTrigger = styled.button<{ $isActive: boolean }>`
   right: 0;
   padding: ${pxToRem(8)};
   z-index: 10;
-  mix-blend-mode: difference;
   color: var(--colour-white);
   opacity: ${(props) => (props.$isActive ? "1" : "0")};
   text-align: right;
