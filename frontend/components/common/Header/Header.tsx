@@ -14,7 +14,7 @@ const HeaderWrapper = styled.header`
   left: 0;
   transform: translateY(calc(-1 * (var(--header-h) / 2)));
   z-index: 100;
-  /* mix-blend-mode: difference; */
+  mix-blend-mode: difference;
   color: var(--colour-white);
   padding: ${pxToRem(16)};
   display: flex;
