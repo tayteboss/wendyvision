@@ -12,8 +12,10 @@ const Title = styled(motion.h1)`
 
 const TextContainer = styled(motion.div)`
   position: absolute;
-  left: calc(100% + 4px);
+  left: 100%;
   white-space: nowrap;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 const SuperScript = styled.sup`
@@ -69,7 +71,7 @@ type Props = {
 };
 
 const HomeTitle = ({ siteSettings }: Props) => {
-  const { primaryService, secondaryServices } = siteSettings;
+  const { secondaryServices } = siteSettings;
   const hasSecondaryServices = secondaryServices.length > 0;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -90,7 +92,6 @@ const HomeTitle = ({ siteSettings }: Props) => {
 
   return (
     <Title variants={wrapperVariants}>
-      {primaryService || ""} /{" "}
       {hasSecondaryServices && (
         <AnimatePresence custom={direction} mode="popLayout">
           <TextContainer

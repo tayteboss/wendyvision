@@ -39,7 +39,6 @@ export type SiteSettingsType = {
       playbackId: string;
     };
   };
-  primaryService: string;
   secondaryServices: {
     title: string;
     superscript: string;

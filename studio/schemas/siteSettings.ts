@@ -31,12 +31,7 @@ export default {
       type: 'url',
     },
     {
-      title: 'Primary Service',
-      name: 'primaryService',
-      type: 'string',
-    },
-    {
-      title: 'Secondary Services',
+      title: 'Services',
       name: 'secondaryServices',
       type: 'array',
       preview: {

@@ -14,7 +14,7 @@ const HeaderWrapper = styled.header`
   left: 0;
   transform: translateY(calc(-1 * (var(--header-h) / 2)));
   z-index: 100;
-  mix-blend-mode: difference;
+  /* mix-blend-mode: difference; */
   color: var(--colour-white);
   padding: ${pxToRem(16)};
   display: flex;
@@ -29,6 +29,10 @@ const HeaderWrapper = styled.header`
 
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
     padding: 0 ${pxToRem(8)};
+  }
+
+  * {
+    color: var(--colour-white);
   }
 `;
 
@@ -69,7 +73,7 @@ const BackDrop = styled.div<{ $isActive: boolean }>`
   left: 0;
   height: 100dvh;
   width: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 99;
@@ -77,10 +81,6 @@ const BackDrop = styled.div<{ $isActive: boolean }>`
   opacity: ${(props) => (props.$isActive ? 1 : 0)};
 
   transition: all var(--transition-speed-default) var(--transition-ease);
-
-  @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
-    background: rgba(0, 0, 0, 0.8);
-  }
 `;
 
 type Props = {
@@ -195,13 +195,14 @@ const Header = (props: Props) => {
               setMenuIsActive={setMenuIsActive}
               setTabActive={setTabActive}
               setActiveProjectId={setActiveProjectId}
+              setBackdropActive={setBackdropActive}
             />
           </DesktopWrapper>
           <MenuTrigger
             menuIsActive={menuIsActive}
-            menuTabActive={menuTabActive}
             setMenuIsActive={setMenuIsActive}
             setMenuTabActive={setMenuTabActive}
+            setBackdropActive={setBackdropActive}
           />
         </RHS>
       </HeaderWrapper>

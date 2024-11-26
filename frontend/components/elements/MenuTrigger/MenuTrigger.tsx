@@ -7,13 +7,13 @@ const MenuTriggerWrapper = styled.button`
 
 type Props = {
   menuIsActive: boolean;
-  menuTabActive: string;
   setMenuIsActive: (value: boolean) => void;
   setMenuTabActive: (tab: string) => void;
+  setBackdropActive: (isActive: boolean) => void;
 };
 
 const MenuTrigger = (props: Props) => {
-  const { menuIsActive, menuTabActive, setMenuIsActive, setMenuTabActive } =
+  const { menuIsActive, setMenuIsActive, setMenuTabActive, setBackdropActive } =
     props;
 
   const handleClick = () => {
@@ -30,6 +30,8 @@ const MenuTrigger = (props: Props) => {
       onClick={() => {
         handleClick();
       }}
+      onMouseOver={() => setBackdropActive(true)}
+      onMouseOut={() => setBackdropActive(false)}
     >
       {menuIsActive ? "Close" : "Menu"}
     </MenuTriggerWrapper>

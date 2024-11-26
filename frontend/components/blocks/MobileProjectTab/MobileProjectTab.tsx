@@ -10,7 +10,7 @@ const MobileProjectTabWrapper = styled.div`
   @media ${(props) => props.theme.mediaBreakpoints.tabletMedium} {
     display: block;
     background: var(--colour-black);
-    min-height: 100dvh;
+    min-height: 100lvh;
   }
 `;
 

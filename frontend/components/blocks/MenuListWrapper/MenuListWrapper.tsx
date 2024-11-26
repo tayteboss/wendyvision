@@ -34,6 +34,7 @@ type Props = {
   setTabActive?: (tab: string) => void;
   setActiveProjectId?: (id: string) => void;
   setCreditsIsActive: (isActive: boolean) => void;
+  setBackdropActive?: (isActive: boolean) => void;
 };
 
 const MenuListWrapper = (props: Props) => {
@@ -50,6 +51,7 @@ const MenuListWrapper = (props: Props) => {
     setTabActive,
     setActiveProjectId,
     setCreditsIsActive,
+    setBackdropActive,
   } = props;
 
   return (
@@ -87,6 +89,7 @@ const MenuListWrapper = (props: Props) => {
               key="credits-trigger"
               wrapperVariants={wrapperVariants}
               setCreditsIsActive={setCreditsIsActive}
+              setBackdropActive={setBackdropActive}
             />
           </CreditListWrapper>
         )}
