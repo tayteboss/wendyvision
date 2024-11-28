@@ -22,6 +22,10 @@ const EmblaSlide = styled.div`
   &.embla__slide {
     margin-bottom: 0;
   }
+
+  &:last-child {
+    padding-bottom: 100vh;
+  }
 `;
 
 type Props = {
