@@ -37,7 +37,7 @@ export default class CustomDocument extends Document {
 				<link rel="shortcut icon" href="/favicon/favicon.ico" />
 				<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
 				<link rel="manifest" href="/favicon/site.webmanifest" />
-					<meta property="og:image" content="/ogg.jpg" />
+				<meta property="og:image" content="/ogg.jpg" />
 				</Head>
 				<body>
 					<Main />
