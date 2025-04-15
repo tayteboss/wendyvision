@@ -133,6 +133,8 @@ const MobileProjectCard = ({
   }, [isActiveIndex, muxPlayerRef.current]);
 
   useEffect(() => {
+    if (!aspectRatio) return;
+
     const [width, height] = aspectRatio.split(":").map(Number);
     const percentage = (height / width) * 100;
     setAspectRatioPercentage(`${percentage}%`);
@@ -154,7 +156,7 @@ const MobileProjectCard = ({
       $aspectRatioPercentage={aspectRatioPercentage}
       onClick={handleVideoState}
     >
-      {media.asset?.playbackId && (
+      {media?.asset?.playbackId && (
         <MediaWrapper>
           <MuxPlayer
             ref={muxPlayerRef}
